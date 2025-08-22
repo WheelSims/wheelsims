@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0g7uevlwvhnd"]
+
+[ext_resource type="PackedScene" uid="uid://c6idgkcvhp3vc" path="res://Environments/street_corner_environment.tscn" id="1_ii6us"]
+[ext_resource type="PackedScene" uid="uid://biluq7vv8ghsm" path="res://Player/player_on_simulator.tscn" id="2_r0oo1"]
+
+[node name="StreetCornerOnSimulator" type="Node3D"]
+
+[node name="StreetCornerEnvironment" parent="." instance=ExtResource("1_ii6us")]
+
+[node name="PlayerOnSimulator" parent="." instance=ExtResource("2_r0oo1")]
