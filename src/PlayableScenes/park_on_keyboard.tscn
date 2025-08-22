@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkkenbb1ihn12"]
+
+[ext_resource type="PackedScene" uid="uid://y2xjjvq3l33t" path="res://Environments/park_environment.tscn" id="1_r2k56"]
+[ext_resource type="PackedScene" uid="uid://k8nnhdqlvvje" path="res://Player/player_on_keyboard.tscn" id="2_i1bkv"]
+
+[node name="ParkOnKeyboard" type="Node3D"]
+
+[node name="ParkEnvironment" parent="." instance=ExtResource("1_r2k56")]
+
+[node name="PlayerOnKeyboard" parent="." instance=ExtResource("2_i1bkv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -235.891, -0.0546428, 336.303)
+
+[connection signal="ready" from="." to="." method="_on_ready"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://biluq7vv8ghsm"]
+[gd_scene load_steps=9 format=3 uid="uid://biluq7vv8ghsm"]
 
 [ext_resource type="Script" uid="uid://bo3s2kc1arfun" path="res://Player/player.gd" id="1_l8h54"]
 [ext_resource type="Script" uid="uid://boe632ih0j5mm" path="res://Player/motors.gd" id="2_4ntmi"]
@@ -9,6 +9,9 @@ radius = 0.25
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jka67"]
 radius = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muua7"]
+size = Vector3(1, 1.00635, 1)
 
 [sub_resource type="FontFile" id="FontFile_2x147"]
 subpixel_positioning = 0
@@ -53,14 +56,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.2, -0.5)
 shape = SubResource("SphereShape3D_jka67")
 debug_color = Color(8.27849e-06, 0.774194, 0.900788, 0.42)
 
-[node name="Camera3DFace" type="Camera3D" parent="."]
+[node name="FrontCameraPose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 1.25, 0)
+
+[node name="FloorCameraPose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, 1.25, -1)
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 1.25, 0)
 current = true
-
-[node name="Camera3DBas" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, 1.25, -1.024)
-current = true
-fov = 105.6
 
 [node name="Motors" type="Node3D" parent="."]
 script = ExtResource("2_4ntmi")
@@ -68,55 +72,39 @@ script = ExtResource("2_4ntmi")
 [node name="DBox" type="Node3D" parent="."]
 script = ExtResource("3_muua7")
 
-[node name="SecondDisplayWindow" type="Window" parent="."]
+[node name="DetectionArea" type="Area3D" parent="." groups=["Player"]]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.506104, 0)
+shape = SubResource("BoxShape3D_muua7")
+
+[node name="FloorProjector" type="Window" parent="."]
 auto_translate_mode = 1
 position = Vector2i(0, 36)
 size = Vector2i(1150, 615)
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="SecondDisplayWindow"]
-offset_right = 1172.0
-offset_bottom = 607.0
-
-[node name="SubViewport" type="SubViewport" parent="SecondDisplayWindow/SubViewportContainer"]
-handle_input_locally = false
-screen_space_aa = 1
-size = Vector2i(1172, 607)
-render_target_update_mode = 4
-
-[node name="SecondCamera" type="Camera3D" parent="SecondDisplayWindow/SubViewportContainer/SubViewport"]
-visible = false
+[node name="FloorCamera" type="Camera3D" parent="FloorProjector"]
 fov = 100.0
 
-[node name="Polygon2D" type="Polygon2D" parent="SecondDisplayWindow/SubViewportContainer/SubViewport"]
+[node name="Polygon2D" type="Polygon2D" parent="FloorProjector"]
 scale = Vector2(1280, 100)
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
-[node name="ThirdDisplayWindow" type="Window" parent="."]
+[node name="FrontProjector" type="Window" parent="."]
 auto_translate_mode = 1
 position = Vector2i(0, 36)
 size = Vector2i(1150, 615)
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="ThirdDisplayWindow"]
-offset_right = 1172.0
-offset_bottom = 607.0
+[node name="FrontCamera" type="Camera3D" parent="FrontProjector"]
 
-[node name="SubViewport" type="SubViewport" parent="ThirdDisplayWindow/SubViewportContainer"]
-handle_input_locally = false
-msaa_3d = 1
-screen_space_aa = 1
-size = Vector2i(1172, 607)
-render_target_update_mode = 4
-
-[node name="ThirdCamera" type="Camera3D" parent="ThirdDisplayWindow/SubViewportContainer/SubViewport"]
-visible = false
-
-[node name="UI" type="Polygon2D" parent="ThirdDisplayWindow/SubViewportContainer/SubViewport"]
+[node name="UI" type="Polygon2D" parent="FrontProjector"]
 position = Vector2(55, 534)
 scale = Vector2(0.61, 0.78)
 polygon = PackedVector2Array(0, 100, 0, 0, 300, 0, 300, 100)
 
-[node name="PlayerText" type="Label" parent="ThirdDisplayWindow/SubViewportContainer/SubViewport/UI"]
+[node name="PlayerText" type="Label" parent="FrontProjector/UI"]
 offset_right = 300.0
 offset_bottom = 99.0
 text = "Test"

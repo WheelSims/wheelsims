@@ -23,6 +23,21 @@ var force_reset: bool = true
 var _udp_receiver = PacketPeerUDP.new()
 var _udp_receiver_connected = false
 var _udp_sender = PacketPeerUDP.new()
+var _default_friction: float = 0.01325
+var _obstacle_friction: float = 1
+
+# Obstacle variables
+var on_any_obstacle = false
+var _nb_rr_obstacle = 0
+var on_rr_obstacle = false
+var _nb_lr_obstacle = 0
+var on_lr_obstacle = false
+var _nb_rf_obstacle = 0
+var on_rf_obstacle = false
+var _nb_lf_obstacle = 0
+var on_lf_obstacle = false
+var _nb_foot_obstacle = 0
+var on_foot_obstacle = false
 
 # Functions
 func _ready() -> void:
@@ -66,4 +81,56 @@ func send() -> void:
 	bytes.encode_u32(36, force_reset)
 	
 	_udp_sender.put_packet(bytes)
-	
+
+func _on_obstacle_colliders_body_shape_entered(body_rid: RID, body: Node3D, body_shape_index: int, local_shape_index: int) -> void:
+	if body.get_groups().is_empty() and  body is not Surface:
+		match body_shape_index:
+			0:
+				_nb_foot_obstacle += 1
+				on_foot_obstacle = true
+			1:
+				_nb_rf_obstacle += 1
+				on_rf_obstacle = true
+			2:
+				_nb_lf_obstacle += 1
+				on_lf_obstacle = true
+			3:
+				_nb_lr_obstacle += 1
+				on_lr_obstacle = true
+			4:
+				_nb_rr_obstacle += 1
+				on_rr_obstacle = true
+		if on_rr_obstacle or on_lr_obstacle or on_lf_obstacle or on_rf_obstacle or on_foot_obstacle:
+			on_any_obstacle	 = true
+			friction = _obstacle_friction
+
+func _on_obstacle_colliders_body_shape_exited(body_rid: RID, body: Node3D, body_shape_index: int, local_shape_index: int) -> void:
+	if body.get_groups().is_empty() and body is not Surface:
+		match body_shape_index:
+			0:
+				_nb_foot_obstacle -= 1
+				if _nb_foot_obstacle == 0:
+					on_foot_obstacle = false
+			1:
+				_nb_rf_obstacle -= 1
+				if _nb_rf_obstacle == 0:
+					on_rf_obstacle = false
+			2:
+				_nb_lf_obstacle -= 1
+				if _nb_lf_obstacle == 0:
+					on_lf_obstacle = false
+			3:
+				_nb_lr_obstacle -= 1
+				if _nb_lf_obstacle == 0:
+					on_lr_obstacle = false
+			4:
+				_nb_rr_obstacle -= 1
+				if _nb_rr_obstacle == 0:
+					on_rr_obstacle = false
+		if !on_rr_obstacle and !on_lr_obstacle and !on_lf_obstacle and !on_rf_obstacle and !on_foot_obstacle:
+			on_any_obstacle = false
+			friction = _default_friction
+
+func _on_player_on_simulator_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
+	if body is Surface and not on_any_obstacle:
+		friction = body.resistance

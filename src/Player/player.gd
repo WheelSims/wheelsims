@@ -9,50 +9,50 @@ extends RigidBody3D
 @export var KB_ANGULAR_SPEED: float = 1  # rad/s
 
 # -----------------------
-# Caméras
+# Cameras
 # -----------------------
-@onready var main_camera := $Camera3DFace  # Caméra pour la fenêtre principale
-@onready var tracked_camera := $Camera3DBas  # Caméra que la seconde va suivre
-@onready var second_camera := $SecondDisplayWindow/SubViewportContainer/SubViewport/SecondCamera  # Caméra dans SubViewport
-@onready var third_camera := $ThirdDisplayWindow/SubViewportContainer/SubViewport/ThirdCamera  # Caméra dans SubViewport
+@onready var front_camera = get_node_or_null("FrontProjector/FrontCamera")
+@onready var floor_camera = get_node_or_null("FloorProjector/FloorCamera")
+@onready var front_camera_pose = get_node_or_null("FrontCameraPose")
+@onready var floor_camera_pose := get_node_or_null("FloorCameraPose")
 
 # -----------------------
 # Custom nodes
 # -----------------------
 @onready var motors = get_node_or_null("Motors")
 @onready var player_text_node: Label = get_node_or_null(
-	"ThirdDisplayWindow/SubViewportContainer/SubViewport/UI/PlayerText"
+	"FrontProjector/UI/PlayerText"
 )
 
 # -----------------------
 # Godot lifecycle
 # -----------------------
 func _ready():
+	pass
 	# Active la caméra principale
-	if second_camera:
-		second_camera.current = true 
-	if third_camera:
-		third_camera.current = true
+	#if second_camera:
+		#second_camera.current = true 
+	#if third_camera:
+		#third_camera.current = true
 
 
 func _process(_delta):
-	# Synchronise la caméra du SubViewport avec une caméra du joueur
-	if second_camera and tracked_camera:
-		second_camera.global_transform = tracked_camera.global_transform
-	if third_camera and main_camera:
-		third_camera.global_transform = main_camera.global_transform
+	if front_camera_pose:
+		front_camera.global_transform = front_camera_pose.global_transform
+	if floor_camera_pose:
+		floor_camera.global_transform = floor_camera_pose.global_transform
 
 func _physics_process(delta: float) -> void:
 	var desired_linear_velocity := 0.0
 	var desired_angular_velocity := 0.0
 
-	# Contrôle clavier
-	var keyboard_velocities = get_keyboard_velocities()
-	desired_linear_velocity += keyboard_velocities[0]
-	desired_angular_velocity += keyboard_velocities[1]
-
-	# Contrôle simulateur (rollers)
-	if motors:
+	# Keyboard navigation
+	var keyboard_desired_velocities = get_keyboard_velocities()
+	desired_linear_velocity += keyboard_desired_velocities[0]
+	desired_angular_velocity += keyboard_desired_velocities[1]
+	
+	# Rollers navigation
+	if motors != null:
 		motors.receive()
 		motors.send()
 		desired_linear_velocity += motors.linear_velocity

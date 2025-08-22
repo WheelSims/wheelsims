@@ -175,7 +175,7 @@ func _on_button_park_pressed() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 
-	var park_instance := preload("res://park_on_simulator.tscn").instantiate()
+	var park_instance := preload("res://PlayableScenes/park_on_simulator.tscn").instantiate()
 	park_instance.name = "ParkOnSimulator"
 	get_tree().get_root().add_child(park_instance)
 
