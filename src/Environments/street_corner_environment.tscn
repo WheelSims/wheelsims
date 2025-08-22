@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhpth75a340o0"]
+
+[ext_resource type="PackedScene" uid="uid://b7o075gc2f5gt" path="res://Terrain/StreetCorner/street_corner_terrain.tscn" id="1_6qklj"]
+[ext_resource type="PackedScene" uid="uid://biluq7vv8ghsm" path="res://Player/player_on_simulator.tscn" id="2_ynxnr"]
+[ext_resource type="Texture2D" uid="uid://wacfloxc8is" path="res://Environments/HDR/daytime.hdr" id="3_ynxnr"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_o8o6p"]
+panorama = ExtResource("3_ynxnr")
+
+[sub_resource type="Sky" id="Sky_jka67"]
+sky_material = SubResource("PanoramaSkyMaterial_o8o6p")
+
+[sub_resource type="Environment" id="Environment_4wj2v"]
+background_mode = 2
+sky = SubResource("Sky_jka67")
+ambient_light_color = Color(0.733333, 0.854902, 0.909804, 1)
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 2
+
+[node name="StreetCornerEnvironment" type="Node3D"]
+
+[node name="StreetCornerTerrain" parent="." instance=ExtResource("1_6qklj")]
+
+[node name="PlayerOnSimulator" parent="." instance=ExtResource("2_ynxnr")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4wj2v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.728969, 0.684547, 0, -0.684547, -0.728969, 0, -2.50862, 0)
+light_energy = 0.825
+shadow_enabled = true
