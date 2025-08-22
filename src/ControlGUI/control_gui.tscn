@@ -1,0 +1,267 @@
+[gd_scene load_steps=17 format=3 uid="uid://dq2eiii6jcj6u"]
+
+[ext_resource type="Script" uid="uid://djgralvk1dv5a" path="res://ControlGUI/control_gui.gd" id="1_21f17"]
+[ext_resource type="Texture2D" uid="uid://btb6if6cvhayk" path="res://ControlGUI/park_thumbnail.png" id="2_euxdb"]
+
+[sub_resource type="Theme" id="Theme_2vys5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21f17"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_euxdb"]
+font_size = 30
+outline_size = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_limkw"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_1naci"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_25mam"]
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eyqqv"]
+bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gi8mn"]
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6vwj"]
+bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67awh"]
+bg_color = Color(1, 0.0156863, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yuhh0"]
+bg_color = Color(0.651251, 0.00598981, 2.40654e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi8mn"]
+bg_color = Color(1, 0.0156863, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qr0t5"]
+font_size = 54
+
+[sub_resource type="LabelSettings" id="LabelSettings_eyqqv"]
+font_size = 36
+
+[node name="ControlGUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1080.0
+offset_bottom = 720.0
+script = ExtResource("1_21f17")
+
+[node name="Panel" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.592157, 0.592157, 0.592157, 1)
+
+[node name="UserManagement" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.028
+offset_left = 23.0
+offset_top = 25.0
+offset_right = 473.0
+offset_bottom = 582.84
+
+[node name="UserManagement" type="VBoxContainer" parent="Panel/UserManagement"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/UserManagement/UserManagement"]
+layout_mode = 2
+theme = SubResource("Theme_2vys5")
+theme_override_styles/normal = SubResource("StyleBoxFlat_21f17")
+text = "Users"
+label_settings = SubResource("LabelSettings_euxdb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UserFields" type="HBoxContainer" parent="Panel/UserManagement/UserManagement"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Name" type="Label" parent="Panel/UserManagement/UserManagement/UserFields"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+text = "Name"
+label_settings = SubResource("LabelSettings_limkw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WheelDis" type="Label" parent="Panel/UserManagement/UserManagement/UserFields"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+text = "WheelDis"
+label_settings = SubResource("LabelSettings_1naci")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mass" type="Label" parent="Panel/UserManagement/UserManagement/UserFields"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+text = "Mass"
+label_settings = SubResource("LabelSettings_25mam")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/UserManagement/UserManagement"]
+custom_minimum_size = Vector2(450, 400)
+layout_mode = 2
+
+[node name="UserList" type="VBoxContainer" parent="Panel/UserManagement/UserManagement/ScrollContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/UserManagement/UserManagement"]
+layout_mode = 2
+
+[node name="AddUser" type="Button" parent="Panel/UserManagement/UserManagement/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+text = "+"
+
+[node name="RemoveUser" type="Button" parent="Panel/UserManagement/UserManagement/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "-"
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/UserManagement/UserManagement"]
+layout_mode = 2
+
+[node name="SceneManagement" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 543.0
+offset_top = 25.0
+offset_right = 993.0
+offset_bottom = 371.0
+
+[node name="SceneManagement" type="VBoxContainer" parent="Panel/SceneManagement"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/SceneManagement/SceneManagement"]
+custom_minimum_size = Vector2(450, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_eyqqv")
+text = "Scene"
+label_settings = SubResource("LabelSettings_gi8mn")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Panel/SceneManagement/SceneManagement"]
+custom_minimum_size = Vector2(450, 300)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a6vwj")
+
+[node name="SelectPark" type="Button" parent="Panel/SceneManagement/SceneManagement/Panel"]
+custom_minimum_size = Vector2(170, 120)
+layout_mode = 0
+offset_left = 27.0
+offset_top = 23.0
+offset_right = 197.0
+offset_bottom = 143.0
+
+[node name="Screenshot" type="TextureRect" parent="Panel/SceneManagement/SceneManagement/Panel/SelectPark"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 145.0
+offset_bottom = 82.0
+texture = ExtResource("2_euxdb")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel/SceneManagement/SceneManagement/Panel/SelectPark"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 89.0
+offset_right = 105.0
+offset_bottom = 112.0
+text = "Park"
+
+[node name="Stop" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 575.0
+offset_right = 425.0
+offset_bottom = 675.0
+
+[node name="Stop" type="Button" parent="Panel/Stop"]
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_67awh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yuhh0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_gi8mn")
+
+[node name="Label" type="Label" parent="Panel/Stop/Stop"]
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "STOP"
+label_settings = SubResource("LabelSettings_qr0t5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DBox" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 516.0
+offset_top = 378.0
+offset_right = 873.0
+offset_bottom = 578.0
+
+[node name="DBox" type="VBoxContainer" parent="Panel/DBox"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="Up" type="Button" parent="Panel/DBox/DBox"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Panel/DBox/DBox/Up"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "↑"
+label_settings = SubResource("LabelSettings_eyqqv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Down" type="Button" parent="Panel/DBox/DBox"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Panel/DBox/DBox/Down"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "↓"
+label_settings = SubResource("LabelSettings_eyqqv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mode" type="Button" parent="Panel/DBox"]
+custom_minimum_size = Vector2(170, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Dbox: Auto"
+
+[connection signal="pressed" from="Panel/UserManagement/UserManagement/HBoxContainer/AddUser" to="." method="_on_btn_add_user_pressed"]
+[connection signal="pressed" from="Panel/UserManagement/UserManagement/HBoxContainer/RemoveUser" to="." method="_on_btn_remove_user_pressed"]
+[connection signal="pressed" from="Panel/SceneManagement/SceneManagement/Panel/SelectPark" to="." method="_on_button_park_pressed"]
+[connection signal="pressed" from="Panel/Stop/Stop" to="." method="_on_button_stop_pressed"]

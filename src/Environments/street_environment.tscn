@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://bdghjlyhxwas4"]
 
-[ext_resource type="PackedScene" uid="uid://dmltfs83e8g7f" path="res://Objects/Car/Car.tscn" id="1_0dw41"]
+[ext_resource type="PackedScene" uid="uid://dmltfs83e8g7f" path="res://Objects/Car/car.tscn" id="1_0dw41"]
 [ext_resource type="Texture2D" uid="uid://wacfloxc8is" path="res://Environments/HDR/daytime.hdr" id="1_pmujg"]
 [ext_resource type="Script" uid="uid://dnqp0o40gsf8a" path="res://Objects/Street/Scripts/traffic_light_manager.gd" id="3_lbknl"]
 [ext_resource type="PackedScene" uid="uid://hcv53osdjj4q" path="res://Objects/Street/PrefabScenes/TrafficLightStuffs/TrafficLight.tscn" id="4_trc7d"]

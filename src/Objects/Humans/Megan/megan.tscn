@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=4 uid="uid://dk7allqav38g8"]
 
-[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/Walk&Idle.res" id="2_gef2h"]
+[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/walk_and_idle.res" id="2_gef2h"]
 [ext_resource type="Texture2D" uid="uid://b5bdnx7tesoej" path="res://Objects/Humans/Megan/Megan_Ch22_1001_Diffuse.png" id="2_she74"]
 [ext_resource type="Texture2D" uid="uid://dfb8e3pil27dy" path="res://Objects/Humans/Megan/Megan_Ch22_1001_Glossiness.png" id="3_ew7rx"]
 [ext_resource type="Texture2D" uid="uid://co0yg8hhr383a" path="res://Objects/Humans/Megan/Megan_Ch22_1001_Normal.png" id="4_gqgon"]

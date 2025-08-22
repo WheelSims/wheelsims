@@ -1,7 +1,7 @@
 [gd_scene load_steps=24 format=4 uid="uid://dnejsadnifhhr"]
 
 [ext_resource type="Texture2D" uid="uid://ditalqvlutfyp" path="res://Objects/Humans/Kate/Kate_Ch21_1001_Diffuse.png" id="2_j42jy"]
-[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/Walk&Idle.res" id="2_tgnop"]
+[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/walk_and_idle.res" id="2_tgnop"]
 [ext_resource type="Texture2D" uid="uid://wrk0f3ou3vxy" path="res://Objects/Humans/Kate/Kate_Ch21_1001_Glossiness.png" id="3_vmr5t"]
 [ext_resource type="Texture2D" uid="uid://bckn26ek66gi2" path="res://Objects/Humans/Kate/Kate_Ch21_1001_Normal.png" id="4_q2q85"]
 [ext_resource type="Texture2D" uid="uid://dhvdqhtx31jyu" path="res://Objects/Humans/Kate/Kate_Ch21_1002_Diffuse.png" id="5_aabyb"]

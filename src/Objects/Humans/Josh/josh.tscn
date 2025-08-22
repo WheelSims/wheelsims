@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://escbtk0epoft" path="res://Objects/Humans/Josh/Josh_Ch23_1001_Glossiness.png" id="3_4wdo3"]
 [ext_resource type="Texture2D" uid="uid://6b0d67i8cp5p" path="res://Objects/Humans/Josh/Josh_Ch23_1001_Normal.png" id="4_pccoi"]
 [ext_resource type="Texture2D" uid="uid://cpbeyjqmog61t" path="res://Objects/Humans/Josh/Josh_Ch23_1002_Diffuse.png" id="5_la1p5"]
-[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/Walk&Idle.res" id="6_j7atl"]
+[ext_resource type="AnimationLibrary" uid="uid://i4ky1kqpry7b" path="res://Objects/Humans/walk_and_idle.res" id="6_j7atl"]
 [ext_resource type="PackedScene" uid="uid://iro5eqatb6du" path="res://Objects/Humans/walking_human.tscn" id="7_4wdo3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7twsn"]
