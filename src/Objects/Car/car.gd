@@ -109,7 +109,6 @@ func _on_far_trigger_area_entered(area: Area3D) -> void:
 	_nb_far_obstacle += 1
 	if _nb_far_obstacle > 0:
 		_should_be_slow = true
-		print("slow")
 
 func _on_far_trigger_area_exited(area: Area3D) -> void:
 	if self.is_ancestor_of(area):
