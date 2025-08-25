@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6idgkcvhp3vc"]
+[gd_scene load_steps=7 format=3 uid="uid://c6idgkcvhp3vc"]
 
 [ext_resource type="PackedScene" uid="uid://bj7d4aocvbm0e" path="res://Terrain/StreetCorner/street_corner_terrain.tscn" id="1_6qklj"]
+[ext_resource type="PackedScene" uid="uid://b74nqh5tcg66o" path="res://Objects/Park/Trees/tree.tscn" id="3_o8o6p"]
 [ext_resource type="Texture2D" uid="uid://wacfloxc8is" path="res://Environments/HDR/daytime.hdr" id="3_ynxnr"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_o8o6p"]
@@ -27,3 +28,30 @@ environment = SubResource("Environment_4wj2v")
 transform = Transform3D(1, 0, 0, 0, -0.728969, 0.684547, 0, -0.684547, -0.728969, 0, -2.50862, 0)
 light_energy = 0.825
 shadow_enabled = true
+
+[node name="Tree1" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.94186, -1.2855, 11.2646)
+
+[node name="Tree2" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98779, -2.57099, 27.0838)
+
+[node name="Tree3" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0441, -2.57099, 34.7093)
+
+[node name="Tree4" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.0972, -2.57099, 3.71307)
+
+[node name="Tree5" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.0002, -2.57099, 14.2285)
+
+[node name="Tree6" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.392, -2.57099, 33.483)
+
+[node name="Tree7" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.2321, -6.83422, -15.1391)
+
+[node name="Tree8" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.0181, -2.57099, -15.9565)
+
+[node name="Tree9" parent="." instance=ExtResource("3_o8o6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.7319, -2.57099, -29.2004)
