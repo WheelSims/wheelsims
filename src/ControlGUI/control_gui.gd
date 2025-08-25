@@ -4,6 +4,7 @@ extends Control
 
 # --- UI users ---
 @onready var patient_list := $Panel/UserManagement/UserManagement/ScrollContainer/UserList
+var current_patient
 
 # --- UI DBox ---
 @onready var btn_dbox      := $Panel/DBox/Mode
@@ -103,9 +104,8 @@ func _on_btn_add_user_pressed() -> void:
 
 func _on_btn_remove_user_pressed() -> void:
 	if patient_list.get_child_count() > 0:
-		var last_row := patient_list.get_child(patient_list.get_child_count() - 1)
-		patient_list.remove_child(last_row)
-		last_row.queue_free()
+		patient_list.remove_child(current_patient)
+		current_patient.queue_free()
 		save_users()
 		_enforce_single_selection()
 
@@ -281,6 +281,7 @@ func _send_heave_target() -> void:
 # =========================
 func _on_row_checkbox_toggled(pressed: bool, row: Node) -> void:
 	if pressed:
+		current_patient = row
 		for other in patient_list.get_children():
 			if other != row:
 				var ocb := other.get_node("CheckBox") as CheckBox
