@@ -770,6 +770,7 @@ vertical_alignment = 1
 
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="UI"]
 stream = ExtResource("3_jgags")
+bus = &"Ext_SFX"
 
 [node name="Trigger" type="Area3D" parent="."]
 monitorable = false
