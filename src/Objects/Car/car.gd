@@ -5,6 +5,9 @@ extends Node3D
 @export var _triggers_on_curve: Array[Area3D]
 var _triggers_on_curve_offsets: Array[float]
 @onready var _path: Path3D = _path_follow.get_parent()
+@onready var down_ray = $Raycasts/RayCast3DDown
+@onready var up_ray = $Raycasts/RayCast3DUp
+var y_offset = 1
 
 ### AUDIO ###
 @onready var _motor_sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
@@ -50,13 +53,31 @@ func _process(delta: float) -> void:
 	else:
 		_current_speed = 0
 
+func _car_transform_correction() -> void:
+	var collision_point: Vector3
+	var collision_normal: Vector3
+
+	if down_ray.is_colliding():
+		collision_point = down_ray.get_collision_point()
+		collision_normal = down_ray.get_collision_normal()
+	elif up_ray.is_colliding():
+		collision_point = up_ray.get_collision_point()
+		collision_normal = up_ray.get_collision_normal()
+	else:
+		return
+
+	var offset = (global_position - collision_point).y
+	y_offset = offset
+
 func _car_progress(delta: float) -> void:
+	_car_transform_correction()
 	_path_follow.progress += _current_speed * delta
+	global_position += Vector3.DOWN * (y_offset)
 	for i in _triggers_on_curve.size():
 		var offset_progress = _path_follow.progress + _triggers_on_curve_offsets[i] + _current_speed / 2
 		var position_on_curve = _path.curve.sample_baked(offset_progress)
-		var global_position = position_on_curve + _path.position
-		_triggers_on_curve[i].global_transform.origin = global_position
+		var car_global_position = position_on_curve + _path.position
+		_triggers_on_curve[i].global_transform.origin = car_global_position
 		
 func _car_audio() -> void:
 	_motor_sound.pitch_scale = lerpf(1, 1.5, _current_speed/_max_speed)
@@ -76,11 +97,11 @@ func _wheel_movements(delta: float) -> void:
 		front_pivot.global_rotation = desired_rotation
 		
 func _on_close_trigger_area_entered(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
+	if (area.is_in_group("NPC") or area.is_in_group("Player")) and not self.is_ancestor_of(area):
 		_nb_obstacle += 1
 
 func _on_close_trigger_area_exited(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
+	if (area.is_in_group("NPC") or area.is_in_group("Player")) and not self.is_ancestor_of(area):
 		_nb_obstacle -= 1
 		if _nb_obstacle < 0:
 			printerr("_nb_obstacle negative.")
