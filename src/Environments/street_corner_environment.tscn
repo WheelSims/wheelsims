@@ -21,13 +21,13 @@ ambient_light_sky_contribution = 0.0
 reflected_light_source = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4wj2v"]
-size = Vector3(3.9541, 0.875977, 1)
+size = Vector3(3.9541, 0.875977, 0.935123)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fcu0f"]
-size = Vector3(9.93359, 0.875977, 1)
+size = Vector3(9.93359, 0.875977, 0.638184)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iwjyl"]
-size = Vector3(4.96729, 0.875977, 1.80029)
+size = Vector3(4.96729, 0.875977, 0.690795)
 
 [sub_resource type="Curve3D" id="Curve3D_4wj2v"]
 _data = {
@@ -74,7 +74,7 @@ obstacle = NodePath("Area3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, -9.53674e-07, 23.1365)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/TrafficLight/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.47705, 0.0620117, 9.53674e-07)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.47704, 0.0620117, -0.0324411)
 shape = SubResource("BoxShape3D_4wj2v")
 
 [node name="TrafficLight2" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
@@ -86,7 +86,7 @@ direction = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, -9.53674e-07, 23.1365)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/TrafficLight2/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80263, 0.0620117, 1.62515)
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -4.80263, 0.0620117, 1.30484)
 shape = SubResource("BoxShape3D_fcu0f")
 
 [node name="TrafficLight3" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
@@ -97,7 +97,7 @@ obstacle = NodePath("Area3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, -9.53674e-07, 23.1365)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/TrafficLight3/Area3D"]
-transform = Transform3D(0.988759, 0, -0.149518, 0, 1, 0, 0.149518, 0, 0.988759, -4.88935, 0.0620112, 0.273165)
+transform = Transform3D(0.988751, 0, -0.149517, 0, 1, 0, 0.149517, 0, 0.988751, -4.8064, 0.0620112, -0.275346)
 shape = SubResource("BoxShape3D_iwjyl")
 
 [node name="CarPaths" type="Node3D" parent="."]
@@ -110,30 +110,27 @@ curve = SubResource("Curve3D_4wj2v")
 transform = Transform3D(-0.168846, -0.133105, -0.976613, 7.45058e-09, 0.990836, -0.135045, 0.985642, -0.0228017, -0.167299, 1.50139, 0, 0.035614)
 
 [node name="Car" parent="CarPaths/Path1/PathFollow3D" instance=ExtResource("3_o8o6p")]
-transform = Transform3D(-0.999627, -9.65632e-05, -0.0276601, 3.72529e-09, 1.0001, -0.00349069, 0.0276601, -0.00348971, -0.999627, 0, -0.170928, 0.0233002)
+transform = Transform3D(-0.999627, -9.6567e-05, -0.0276601, 5.58794e-09, 1.0001, -0.00349069, 0.0276601, -0.00348978, -0.999627, 1.90735e-06, -0.0590053, 0.00805664)
 
 [node name="Path2" type="Path3D" parent="CarPaths"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8342, 0, -42.106)
 curve = SubResource("Curve3D_ynxnr")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="CarPaths/Path2"]
-transform = Transform3D(-0.880436, -0.00108008, 0.474133, -1.16414e-10, 0.999959, 0.00227796, -0.474144, 0.0020056, -0.880417, 0.070015, 0, -1.40785)
+transform = Transform3D(-0.880436, -0.00108008, 0.474133, -1.16414e-10, 0.999955, 0.00227796, -0.474144, 0.0020056, -0.880417, 0.070015, 0, -1.40785)
 
 [node name="Car" parent="CarPaths/Path2/PathFollow3D" instance=ExtResource("3_o8o6p")]
-transform = Transform3D(-1.00002, 1.52923e-06, 0.000438243, 9.9797e-07, 1.00012, -0.00121268, -0.000438243, -0.00121278, -1.00004, -0.605891, -0.219863, -1.27325)
-
-[node name="Camera3D" type="Camera3D" parent="CarPaths"]
-transform = Transform3D(0.402742, -0.286664, 0.869266, 2.98027e-08, 0.949692, 0.313186, -0.915314, -0.126133, 0.38248, -16.276, 3.55737, 46.4269)
+transform = Transform3D(-1.00002, 1.52912e-06, 0.000438184, 9.98087e-07, 1.00012, -0.00121268, -0.000438243, -0.00121278, -1.00004, -0.605889, -0.147922, -1.27308)
 
 [node name="Path3D" type="Path3D" parent="CarPaths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.8241, -0.787678, 42.3775)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.8241, -0.666341, 42.3775)
 curve = SubResource("Curve3D_fcu0f")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="CarPaths/Path3D"]
-transform = Transform3D(0.925847, -0.0894005, -0.367168, 1.49011e-08, 0.971609, -0.236575, 0.377895, 0.219032, 0.899565, -0.413326, -0.653424, 1.80665)
+transform = Transform3D(0.925846, -0.0894002, -0.367168, 1.49011e-08, 0.971606, -0.236575, 0.377895, 0.219031, 0.899564, -0.413326, -0.653424, 1.80665)
 
 [node name="Car" parent="CarPaths/Path3D/PathFollow3D" instance=ExtResource("3_o8o6p")]
-transform = Transform3D(-0.999582, -0.000102204, -0.029276, 0.000381353, 0.99997, -0.016511, 0.0292736, -0.0165166, -0.999451, -0.597, 0, -1.756)
+transform = Transform3D(-0.999582, -0.000102207, -0.0292761, 0.000381358, 0.99997, -0.016511, 0.0292737, -0.0165166, -0.999451, 0, 0, 0)
 
 [node name="Tree1" parent="." instance=ExtResource("6_fcu0f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.94186, -1.2855, 11.2646)

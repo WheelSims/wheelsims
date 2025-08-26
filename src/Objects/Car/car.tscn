@@ -377,6 +377,7 @@ _triggers_on_curve = [NodePath("Triggers/FrontTrigger"), NodePath("Triggers/FarT
 _max_speed = 10.0
 _slow_speed = 2.0
 _acceleration = 4.0
+_decceleration = 5.0
 _wheels = [NodePath("Car_geo/FrontRight/WheelFrontRight"), NodePath("Car_geo/FrontLeft/WheelFrontLeft"), NodePath("Car_geo/WheelBackLeft"), NodePath("Car_geo/WheelBackRight")]
 _front_pivots = [NodePath("Car_geo/FrontRight"), NodePath("Car_geo/FrontLeft")]
 
@@ -415,7 +416,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 4.65661e-10, 1, 0, 0.00484802, 1.38898)
 
 [node name="CloseTrigger" type="Area3D" parent="Triggers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 4.65661e-10, 1, 0, 0.524762, 3.19021)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 9.31323e-10, 1, 0, 0.521398, 2.22647)
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Triggers/CloseTrigger"]
@@ -423,14 +424,14 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 
 shape = SubResource("CapsuleShape3D_asns1")
 
 [node name="FrontTrigger" type="Area3D" parent="Triggers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 2.32831e-10, 1, 0, -4.65661e-10, 4.69141)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 4.65661e-10, 1, 0, -0.00219947, 4.06125)
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Triggers/FrontTrigger"]
 shape = SubResource("SphereShape3D_slanq")
 
 [node name="FarTrigger" type="Area3D" parent="Triggers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 6.98492e-10, 1, 0, 0.630152, 8.4894)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 1.62981e-09, 1, 0, 0.628004, 7.87411)
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Triggers/FarTrigger"]

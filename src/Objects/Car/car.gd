@@ -16,11 +16,13 @@ var y_offset = 1
 @export var _max_speed: float
 @export var _slow_speed: float
 @export var _acceleration: float
+@export var _decceleration : float
 var _current_speed: float = 0
 var _target_speed: float = 0
-var _nb_obstacle: int = 0
+var _nb_close_obstacle: int = 0
 var _nb_front_obstacle: int = 0
 var _nb_far_obstacle: int = 0
+var _must_stop = false
 var _should_stop = false
 var _should_be_slow = false
 
@@ -41,17 +43,25 @@ func _process(delta: float) -> void:
 	_car_audio()
 	_wheel_movements(delta)
 		
-	if _nb_obstacle < 1:
+	if not _must_stop:
 		if _should_be_slow:
 			_target_speed = _slow_speed
 		elif _should_stop:
 			_target_speed = 0
+		elif _must_stop:
+			_current_speed = 0
 		else:
 			_target_speed = _max_speed
-		_current_speed = move_toward(_current_speed, _target_speed, delta * _acceleration)
+
+		if (_current_speed > _target_speed):
+			_current_speed = move_toward(_current_speed, _target_speed, delta * _decceleration)
+		else:
+			_current_speed = move_toward(_current_speed, _target_speed, delta * _acceleration)
+
 		_car_progress(delta)
 	else:
 		_current_speed = 0
+		print("stop")
 
 func _car_transform_correction() -> void:
 	var collision_point: Vector3
@@ -97,15 +107,21 @@ func _wheel_movements(delta: float) -> void:
 		front_pivot.global_rotation = desired_rotation
 		
 func _on_close_trigger_area_entered(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player")) and not self.is_ancestor_of(area):
-		_nb_obstacle += 1
+	if self.is_ancestor_of(area):
+		return
+	_nb_close_obstacle += 1
+	if _nb_close_obstacle > 0:
+		_must_stop = true
 
 func _on_close_trigger_area_exited(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player")) and not self.is_ancestor_of(area):
-		_nb_obstacle -= 1
-		if _nb_obstacle < 0:
-			printerr("_nb_obstacle negative.")
-			_nb_obstacle = 0
+	if self.is_ancestor_of(area):
+		return
+	_nb_close_obstacle -= 1
+	if _nb_close_obstacle == 0:
+		_must_stop = false
+	elif _nb_close_obstacle < 0:
+		printerr("_nb_close_obstacle negative.")
+		_nb_close_obstacle = 0
 		
 func _on_front_trigger_area_entered(area: Area3D) -> void:
 	if self.is_ancestor_of(area):
