@@ -1,11 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://c6idgkcvhp3vc"]
+[gd_scene load_steps=19 format=3 uid="uid://c6idgkcvhp3vc"]
 
 [ext_resource type="PackedScene" uid="uid://bj7d4aocvbm0e" path="res://Terrain/StreetCorner/street_corner_terrain.tscn" id="1_6qklj"]
 [ext_resource type="Script" uid="uid://dnqp0o40gsf8a" path="res://Objects/Street/Scripts/traffic_light_manager.gd" id="3_4wj2v"]
 [ext_resource type="PackedScene" uid="uid://dmltfs83e8g7f" path="res://Objects/Car/car.tscn" id="3_o8o6p"]
 [ext_resource type="Texture2D" uid="uid://wacfloxc8is" path="res://Environments/HDR/daytime.hdr" id="3_ynxnr"]
 [ext_resource type="PackedScene" uid="uid://hcv53osdjj4q" path="res://Objects/Street/PrefabScenes/TrafficLightStuffs/TrafficLight.tscn" id="4_o8o6p"]
+[ext_resource type="PackedScene" uid="uid://ckf2r5kqw6h5r" path="res://Objects/Street/PrefabScenes/TrafficLightStuffs/PedestrianTrafficLightWithPole.tscn" id="5_iwjyl"]
+[ext_resource type="PackedScene" uid="uid://b7wmf34eitxkr" path="res://Objects/Street/PrefabScenes/TrafficLightStuffs/PedestrianTrafficLightWithoutPole.tscn" id="6_341mv"]
 [ext_resource type="PackedScene" uid="uid://b74nqh5tcg66o" path="res://Objects/Park/Trees/tree.tscn" id="6_fcu0f"]
+[ext_resource type="PackedScene" uid="uid://k8nnhdqlvvje" path="res://Player/player_on_keyboard.tscn" id="9_vyufj"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_o8o6p"]
 panorama = ExtResource("3_ynxnr")
@@ -66,31 +69,48 @@ shadow_enabled = true
 script = ExtResource("3_4wj2v")
 traffic_lights = [NodePath("TrafficLight"), NodePath("TrafficLight2"), NodePath("TrafficLight3")]
 
-[node name="TrafficLight" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
-transform = Transform3D(-0.847317, 0, 0.531088, 0, 1, 0, -0.531088, 0, -0.847317, -16.3581, -0.25325, -1.69925)
+[node name="TrafficLight" parent="StreetCorner" node_paths=PackedStringArray("obstacle", "_pedestrian_traffic_lights") instance=ExtResource("4_o8o6p")]
+transform = Transform3D(-0.847317, 0, 0.531088, 0, 1, 0, -0.531088, 0, -0.847317, -16.3581, -0.663204, -1.69925)
 obstacle = NodePath("Area3D")
+_pedestrian_traffic_lights = [NodePath("PedestrianTrafficLight4"), NodePath("PedestrianTrafficLight5"), NodePath("PedestrianTrafficLight"), NodePath("../TrafficLight2/PedestrianTrafficLight4")]
 
 [node name="Area3D" type="Area3D" parent="StreetCorner/TrafficLight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, -9.53674e-07, 23.1365)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, 0.380622, 23.1365)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/TrafficLight/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.47704, 0.0620117, -0.0324411)
+transform = Transform3D(0.999927, 0.00984207, 0.00702336, -0.00973963, 0.999848, -0.0144715, -0.00716475, 0.0144021, 0.999871, -1.47704, 0.0620117, -0.0324402)
 shape = SubResource("BoxShape3D_4wj2v")
 
-[node name="TrafficLight2" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
-transform = Transform3D(-0.526674, 0, -0.850067, 0, 1, 0, 0.850067, 0, -0.526674, 3.60522, -0.00428042, 7.64299)
+[node name="PedestrianTrafficLight4" parent="StreetCorner/TrafficLight" instance=ExtResource("5_iwjyl")]
+transform = Transform3D(0.99935, 0, 0.036033, 0, 1, 0, -0.036033, 0, 0.99935, -23.3964, 0.514276, 3.49444)
+
+[node name="PedestrianTrafficLight5" parent="StreetCorner/TrafficLight" instance=ExtResource("6_341mv")]
+transform = Transform3D(-0.998304, 0, -0.0582083, 0, 1, 0, 0.0582083, 0, -0.998304, 4.95421, 2.89741, 21.3162)
+
+[node name="TrafficLight2" parent="StreetCorner" node_paths=PackedStringArray("obstacle", "_pedestrian_traffic_lights") instance=ExtResource("4_o8o6p")]
+transform = Transform3D(-0.526674, 0, -0.850067, 0, 1, 0, 0.850067, 0, -0.526674, 3.60522, -0.166266, 7.64299)
 obstacle = NodePath("Area3D")
 direction = 1
+_pedestrian_traffic_lights = [NodePath("PedestrianTrafficLight4"), NodePath("PedestrianTrafficLight3"), NodePath("PedestrianTrafficLight"), NodePath("PedestrianTrafficLight2")]
 
 [node name="Area3D" type="Area3D" parent="StreetCorner/TrafficLight2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00375, -9.53674e-07, 23.1365)
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -5.00375, -0.136532, 23.1365)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/TrafficLight2/Area3D"]
 transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -4.80263, 0.0620117, 1.30484)
 shape = SubResource("BoxShape3D_fcu0f")
 
+[node name="PedestrianTrafficLight3" parent="StreetCorner/TrafficLight2" instance=ExtResource("5_iwjyl")]
+transform = Transform3D(-0.999798, 0, 0.0201222, 0, 1, 0, -0.0201222, 0, -0.999798, -18.9015, -0.26806, 26.3413)
+
+[node name="PedestrianTrafficLight4" parent="StreetCorner/TrafficLight2" instance=ExtResource("5_iwjyl")]
+transform = Transform3D(0.996099, 0, -0.0882509, 0, 1, 0, 0.0882509, 0, 0.996099, -19.5242, 0.153695, -2.15636)
+
+[node name="PedestrianTrafficLight2" parent="StreetCorner/TrafficLight2" instance=ExtResource("5_iwjyl")]
+transform = Transform3D(-0.995385, 0, 0.0959672, 0, 1, 0, -0.0959672, 0, -0.995385, -1.25281, -0.484445, 23.1789)
+
 [node name="TrafficLight3" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
-transform = Transform3D(0.889273, 0, -0.457377, 0, 1, 0, 0.457377, 0, 0.889273, 15.313, -0.00428042, -12.2883)
+transform = Transform3D(0.889273, 0, -0.457377, 0, 1, 0, 0.457377, 0, 0.889273, 15.3435, -0.0123805, -12.2804)
 obstacle = NodePath("Area3D")
 
 [node name="Area3D" type="Area3D" parent="StreetCorner/TrafficLight3"]
@@ -117,7 +137,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8342, 0, -42.106)
 curve = SubResource("Curve3D_ynxnr")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="CarPaths/Path2"]
-transform = Transform3D(-0.880436, -0.00108008, 0.474133, -1.16414e-10, 0.999955, 0.00227796, -0.474144, 0.0020056, -0.880417, 0.070015, 0, -1.40785)
+transform = Transform3D(-0.880436, -0.00108007, 0.474133, -1.16414e-10, 0.999951, 0.00227796, -0.474144, 0.00200559, -0.880417, 0.070015, 0, -1.40785)
 
 [node name="Car" parent="CarPaths/Path2/PathFollow3D" instance=ExtResource("3_o8o6p")]
 transform = Transform3D(-1.00002, 1.52912e-06, 0.000438184, 9.98087e-07, 1.00012, -0.00121268, -0.000438243, -0.00121278, -1.00004, -0.605889, -0.147922, -1.27308)
@@ -158,3 +178,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.0181, -2.57099, -15.9565)
 
 [node name="Tree9" parent="." instance=ExtResource("6_fcu0f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.7319, -2.57099, -29.2004)
+
+[node name="PlayerOnKeyboard" parent="." instance=ExtResource("9_vyufj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.66257, -0.491584, -10.8068)

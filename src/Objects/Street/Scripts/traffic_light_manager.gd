@@ -10,9 +10,12 @@ var _currentDirection : Direction = Direction.NS
 var yellow_on = false
 var _timer : float
 
+@export var pedestian_traffic_lights : Array[PedestrianTrafficLight] = []
+
 func _ready() -> void:
-	_timer = 20
+	_timer = 0
 	for traffic_light in traffic_lights:
+		traffic_light.green_light_duration = green_light_duration
 		if (traffic_light.direction == Direction.NS):
 			traffic_light.set_light_state(traffic_light.LightState.GREEN)
 		else:
@@ -20,6 +23,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_timer += delta
+
 	if _timer > green_light_duration:
 		if not yellow_on:
 			_set_yellow()
@@ -27,6 +31,15 @@ func _process(delta: float) -> void:
 			_timer = 0
 			yellow_on = false
 			_set_green_red()
+
+func _pedestrian_traffic_light(delta : float) -> void:
+	for pedestian_traffic_light in pedestian_traffic_lights:
+		if (pedestian_traffic_light.direction == _currentDirection):
+			pedestian_traffic_light.change_state(true)
+			pedestian_traffic_light.counter(ceil(green_light_duration - _timer))
+		else:
+			pedestian_traffic_light.change_state(false)
+			
 
 func _set_yellow():
 	yellow_on = true

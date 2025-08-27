@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7wmf34eitxkr"]
+
+[ext_resource type="Script" uid="uid://djievg7lmpa4q" path="res://Objects/Street/Scripts/pedestrian_traffic_light.gd" id="1_djgff"]
+[ext_resource type="PackedScene" uid="uid://bn5t2b22gh6vg" path="res://Objects/Street/FBX/pedestrianLight.fbx" id="2_cjqa2"]
+[ext_resource type="Texture2D" uid="uid://bxvteywhvo0kc" path="res://Objects/Street/Textures/Character.png" id="3_cr2um"]
+[ext_resource type="Texture2D" uid="uid://dp7bs28bhonax" path="res://Objects/Street/Textures/Hand.png" id="4_xpiw5"]
+[ext_resource type="PackedScene" uid="uid://cglpclsslib6r" path="res://Objects/Street/FBX/pedestrianPoleConnection.fbx" id="5_tkc01"]
+[ext_resource type="PackedScene" uid="uid://cd4tgqtvjd3ex" path="res://Objects/Street/FBX/pedestrianPoleSupport.fbx" id="6_jg8u2"]
+
+[node name="PedestrianTrafficLight" type="Node3D" node_paths=PackedStringArray("_hand_sprite", "_character_sprite", "_blink_timer")]
+script = ExtResource("1_djgff")
+_hand_sprite = NodePath("pedestrianLightCounter/pedestrianLightSigns/Hand")
+_character_sprite = NodePath("pedestrianLightCounter/pedestrianLightSigns/Character")
+_blink_timer = NodePath("pedestrianLightCounter/pedestrianLightSigns/Timer")
+
+[node name="pedestrianPoleSupport" parent="." instance=ExtResource("6_jg8u2")]
+transform = Transform3D(-0.0226873, 4.47031e-08, -0.999743, 0.999743, -4.37001e-08, -0.0226873, -4.47031e-08, -1, -4.37001e-08, 0.444078, 0.376458, -0.116274)
+
+[node name="pedestrianPoleConnection" parent="." instance=ExtResource("5_tkc01")]
+transform = Transform3D(-0.0226002, 0, -0.999744, 0, 1, 0, 0.999744, 0, -0.0226002, 0.405287, 0.376458, -0.113958)
+
+[node name="pedestrianLightCounter" parent="." instance=ExtResource("2_cjqa2")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="Label3D" type="Label3D" parent="pedestrianLightCounter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0750272)
+alpha_cut = 1
+modulate = Color(0.784314, 0.211765, 0.203922, 1)
+text = "0"
+outline_size = 0
+
+[node name="pedestrianLightSigns" parent="pedestrianLightCounter" instance=ExtResource("2_cjqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015752, 0.23, 0.000839859)
+
+[node name="Timer" type="Timer" parent="pedestrianLightCounter/pedestrianLightSigns"]
+wait_time = 0.5
+
+[node name="Character" type="Sprite3D" parent="pedestrianLightCounter/pedestrianLightSigns"]
+transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0.0830189)
+visible = false
+texture = ExtResource("3_cr2um")
+
+[node name="Hand" type="Sprite3D" parent="pedestrianLightCounter/pedestrianLightSigns"]
+transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 0, 0.0830189)
+modulate = Color(0.78509, 0.209959, 0.205559, 1)
+texture = ExtResource("4_xpiw5")
