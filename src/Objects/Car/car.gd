@@ -5,6 +5,10 @@ extends Node3D
 @export var _triggers_on_curve: Array[Area3D]
 var _triggers_on_curve_offsets: Array[float]
 @onready var _path: Path3D = _path_follow.get_parent()
+@onready var down_ray = $Raycasts/RayCast3DDown
+@onready var up_ray = $Raycasts/RayCast3DUp
+var y_offset = 1
+var _y_at_first_pos : float
 
 ### AUDIO ###
 @onready var _motor_sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
@@ -13,11 +17,13 @@ var _triggers_on_curve_offsets: Array[float]
 @export var _max_speed: float
 @export var _slow_speed: float
 @export var _acceleration: float
+@export var _decceleration : float
 var _current_speed: float = 0
 var _target_speed: float = 0
-var _nb_obstacle: int = 0
+var _nb_close_obstacle: int = 0
 var _nb_front_obstacle: int = 0
 var _nb_far_obstacle: int = 0
+var _must_stop = false
 var _should_stop = false
 var _should_be_slow = false
 
@@ -29,6 +35,7 @@ var _wheels_angular_speed: float = 0.0
 
 # Store the original Z offsets of the triggers before resetting their positions.
 func _ready():
+	_y_at_first_pos = global_position.y
 	for i in _triggers_on_curve.size():
 		var offset = _triggers_on_curve[i].position.z
 		_triggers_on_curve_offsets.append(offset)
@@ -38,25 +45,55 @@ func _process(delta: float) -> void:
 	_car_audio()
 	_wheel_movements(delta)
 		
-	if _nb_obstacle < 1:
+	if not _must_stop:
 		if _should_be_slow:
 			_target_speed = _slow_speed
 		elif _should_stop:
 			_target_speed = 0
+		elif _must_stop:
+			_current_speed = 0
 		else:
 			_target_speed = _max_speed
-		_current_speed = move_toward(_current_speed, _target_speed, delta * _acceleration)
+
+		if (_current_speed > _target_speed):
+			_current_speed = move_toward(_current_speed, _target_speed, delta * _decceleration)
+		else:
+			_current_speed = move_toward(_current_speed, _target_speed, delta * _acceleration)
+
 		_car_progress(delta)
 	else:
 		_current_speed = 0
 
+func _car_transform_correction() -> void:
+	var collision_point: Vector3
+	var collision_normal: Vector3
+
+	if down_ray.is_colliding():
+		collision_point = down_ray.get_collision_point()
+		collision_normal = down_ray.get_collision_normal()
+	elif up_ray.is_colliding():
+		collision_point = up_ray.get_collision_point()
+		collision_normal = up_ray.get_collision_normal()
+	else:
+		y_offset = 0
+		return
+
+	var offset = (global_position - collision_point).y
+	y_offset = offset
+
 func _car_progress(delta: float) -> void:
+	if _path_follow.progress < 0.2:
+		position.y = 0
+	else:
+		_car_transform_correction()
+		position.y -= y_offset
 	_path_follow.progress += _current_speed * delta
+
 	for i in _triggers_on_curve.size():
 		var offset_progress = _path_follow.progress + _triggers_on_curve_offsets[i] + _current_speed / 2
 		var position_on_curve = _path.curve.sample_baked(offset_progress)
-		var global_position = position_on_curve + _path.position
-		_triggers_on_curve[i].global_transform.origin = global_position
+		var car_global_position = position_on_curve + _path.position
+		_triggers_on_curve[i].global_transform.origin = car_global_position
 		
 func _car_audio() -> void:
 	_motor_sound.pitch_scale = lerpf(1, 1.5, _current_speed/_max_speed)
@@ -77,14 +114,14 @@ func _wheel_movements(delta: float) -> void:
 		
 func _on_close_trigger_area_entered(area: Area3D) -> void:
 	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
-		_nb_obstacle += 1
+		_nb_close_obstacle += 1
 
 func _on_close_trigger_area_exited(area: Area3D) -> void:
 	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
-		_nb_obstacle -= 1
-		if _nb_obstacle < 0:
+		_nb_close_obstacle -= 1
+		if _nb_close_obstacle < 0:
 			printerr("_nb_obstacle negative.")
-			_nb_obstacle = 0
+			_nb_close_obstacle = 0
 		
 func _on_front_trigger_area_entered(area: Area3D) -> void:
 	if self.is_ancestor_of(area):
@@ -109,7 +146,6 @@ func _on_far_trigger_area_entered(area: Area3D) -> void:
 	_nb_far_obstacle += 1
 	if _nb_far_obstacle > 0:
 		_should_be_slow = true
-		print("slow")
 
 func _on_far_trigger_area_exited(area: Area3D) -> void:
 	if self.is_ancestor_of(area):

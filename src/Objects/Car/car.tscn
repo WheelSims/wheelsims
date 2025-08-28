@@ -377,6 +377,7 @@ _triggers_on_curve = [NodePath("Triggers/FrontTrigger"), NodePath("Triggers/FarT
 _max_speed = 10.0
 _slow_speed = 2.0
 _acceleration = 4.0
+_decceleration = 5.0
 _wheels = [NodePath("Car_geo/FrontRight/WheelFrontRight"), NodePath("Car_geo/FrontLeft/WheelFrontLeft"), NodePath("Car_geo/WheelBackLeft"), NodePath("Car_geo/WheelBackRight")]
 _front_pivots = [NodePath("Car_geo/FrontRight"), NodePath("Car_geo/FrontLeft")]
 
@@ -449,7 +450,15 @@ shape = SubResource("BoxShape3D_v636r")
 transform = Transform3D(0.99999, 0, 0, 0, 0.999894, -1.58325e-08, 0, 0, 0.999984, 0, 0.00484802, 1.38898)
 stream = ExtResource("2_ly6kp")
 autoplay = true
-bus = &"Street"
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="RayCast3DDown" type="RayCast3D" parent="Raycasts"]
+target_position = Vector3(0, -3, 0)
+hit_back_faces = false
+
+[node name="RayCast3DUp" type="RayCast3D" parent="Raycasts"]
+target_position = Vector3(0, 3, 0)
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="Triggers/CloseTrigger" to="." method="_on_close_trigger_area_entered"]
