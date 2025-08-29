@@ -1,8 +1,7 @@
 [gd_scene load_steps=22 format=4 uid="uid://dmltfs83e8g7f"]
 
+[ext_resource type="Script" uid="uid://caocvec12vany" path="res://Objects/Car/car.gd" id="1_ly6kp"]
 [ext_resource type="AudioStream" uid="uid://cr67rcgnvkq56" path="res://Sound/Sounds/StreetZone/CarIdleLoop.wav" id="2_ly6kp"]
-[ext_resource type="Script" uid="uid://caocvec12vany" path="res://Objects/Car/car_script_renamed.gd" id="2_v636r"]
-
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_endym"]
 resource_name = "Window"
@@ -373,7 +372,7 @@ size = Vector3(2.14301, 1.56146, 5.00439)
 
 [node name="Car" type="Node3D" node_paths=PackedStringArray("_triggers_on_curve", "_wheels", "_front_pivots")]
 transform = Transform3D(1.00001, 0, 0, 0, 1.0001, -0.00349069, 0, 0.00349102, 1.00001, 0, 0, 0)
-script = ExtResource("2_v636r")
+script = ExtResource("1_ly6kp")
 _triggers_on_curve = [NodePath("Triggers/FrontTrigger"), NodePath("Triggers/FarTrigger")]
 _max_speed = 10.0
 _slow_speed = 2.0
