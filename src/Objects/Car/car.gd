@@ -113,15 +113,21 @@ func _wheel_movements(delta: float) -> void:
 		front_pivot.global_rotation = desired_rotation
 		
 func _on_close_trigger_area_entered(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
-		_nb_close_obstacle += 1
+	if self.is_ancestor_of(area):
+		return
+	_nb_close_obstacle += 1
+	if _nb_close_obstacle>0:
+		_must_stop = true
 
 func _on_close_trigger_area_exited(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player") or area.is_in_group("Obstacle")) and not self.is_ancestor_of(area):
-		_nb_close_obstacle -= 1
-		if _nb_close_obstacle < 0:
-			printerr("_nb_obstacle negative.")
-			_nb_close_obstacle = 0
+	if self.is_ancestor_of(area):
+		return
+	_nb_close_obstacle -= 1
+	if _nb_close_obstacle == 0:
+		_must_stop = false
+	elif _nb_close_obstacle < 0:
+		printerr("_nb_obstacle negative.")
+		_nb_close_obstacle = 0
 		
 func _on_front_trigger_area_entered(area: Area3D) -> void:
 	if self.is_ancestor_of(area):

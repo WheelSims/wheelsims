@@ -27,13 +27,15 @@ func _process(delta):
 	pathFollow.progress += _current_speed * delta
 
 func _on_trigger_area_entered(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player")):
-		_nb_obstacle += 1
+	if self.is_ancestor_of(area):
+		return
+	_nb_obstacle += 1
 
 
 func _on_trigger_area_exited(area: Area3D) -> void:
-	if (area.is_in_group("NPC") or area.is_in_group("Player")):
-		_nb_obstacle -= 1
+	if self.is_ancestor_of(area):
+		return
+	_nb_obstacle -= 1
 		
 func play_footstep():
 	if not footstep_player.playing:
