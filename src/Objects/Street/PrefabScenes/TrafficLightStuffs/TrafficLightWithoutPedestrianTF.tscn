@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cd4tgqtvjd3ex" path="res://Objects/Street/FBX/pedestrianPoleSupport.fbx" id="13_m6wng"]
 [ext_resource type="PackedScene" uid="uid://cglpclsslib6r" path="res://Objects/Street/FBX/pedestrianPoleConnection.fbx" id="14_2igld"]
 
-[node name="TrafficLight" type="Node3D" node_paths=PackedStringArray("red_light_bulbs", "green_light_bulbs", "yellow_light_bulbs", "_pedestrian_traffic_lights")]
+[node name="TrafficLight" type="Node3D" node_paths=PackedStringArray("red_light_bulbs", "green_light_bulbs", "yellow_light_bulbs")]
 script = ExtResource("1_klo28")
 red_light_bulbs = [NodePath("TrafficLight_WithSupport/TrafficLight/trafficLightBulbRed/trafficLightBulb_geo/trafficLightBulb_LOD_2"), NodePath("TrafficLight_WithSupport2/TrafficLight/trafficLightBulbRed/trafficLightBulb_geo/trafficLightBulb_LOD_2"), NodePath("TrafficLight_WithSupport3/TrafficLight/trafficLightBulbRed/trafficLightBulb_geo/trafficLightBulb_LOD_2")]
 green_light_bulbs = [NodePath("TrafficLight_WithSupport/TrafficLight/trafficLightBulbGreen/trafficLightBulb_geo/trafficLightBulb_LOD_2"), NodePath("TrafficLight_WithSupport2/TrafficLight/trafficLightBulbGreen/trafficLightBulb_geo/trafficLightBulb_LOD_2"), NodePath("TrafficLight_WithSupport3/TrafficLight/trafficLightBulbGreen/trafficLightBulb_geo/trafficLightBulb_LOD_2")]
@@ -23,7 +23,6 @@ yellow_light_bulbs = [NodePath("TrafficLight_WithSupport3/TrafficLight/trafficLi
 _red_light_ON = ExtResource("2_ehakf")
 _green_light_ON = ExtResource("3_tkh1g")
 _yellow_light_ON = ExtResource("4_e5aqo")
-_pedestrian_traffic_lights = [null]
 
 [node name="trafficLightPoleSupport_02" parent="." instance=ExtResource("5_4pmxh")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 3.95, 0)
