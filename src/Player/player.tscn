@@ -1,0 +1,114 @@
+[gd_scene load_steps=9 format=3 uid="uid://biluq7vv8ghsm"]
+
+[ext_resource type="Script" uid="uid://bo3s2kc1arfun" path="res://Player/player.gd" id="1_l8h54"]
+[ext_resource type="Script" uid="uid://boe632ih0j5mm" path="res://Player/motors.gd" id="2_4ntmi"]
+[ext_resource type="Script" uid="uid://da3tqctbq8isk" path="res://Player/d_box.gd" id="3_muua7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_r3fl7"]
+radius = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jka67"]
+radius = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_muua7"]
+size = Vector3(1, 1.00635, 1)
+
+[sub_resource type="FontFile" id="FontFile_2x147"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/50/0/ascent = 0.0
+cache/0/50/0/descent = 0.0
+cache/0/50/0/underline_position = 0.0
+cache/0/50/0/underline_thickness = 0.0
+cache/0/50/0/scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_btcbx"]
+font = SubResource("FontFile_2x147")
+font_size = 50
+font_color = Color(0, 0, 0, 1)
+
+[node name="PlayerOnSimulator" type="RigidBody3D" groups=["Player"]]
+mass = 80.0
+angular_damp = 50.0
+script = ExtResource("1_l8h54")
+
+[node name="RRWheelCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.25, 0.5)
+shape = SubResource("SphereShape3D_r3fl7")
+
+[node name="LRWheelCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.25, 0.5)
+shape = SubResource("SphereShape3D_r3fl7")
+
+[node name="LFWheelCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.2, -0.5)
+shape = SubResource("SphereShape3D_jka67")
+debug_color = Color(8.27849e-06, 0.774194, 0.900788, 0.42)
+
+[node name="LFWheelCollider2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.2, -0.5)
+shape = SubResource("SphereShape3D_jka67")
+debug_color = Color(8.27849e-06, 0.774194, 0.900788, 0.42)
+
+[node name="FrontCameraPose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 1.25, 0)
+
+[node name="FloorCameraPose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, 1.25, -1)
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 1.25, 0)
+current = true
+
+[node name="Motors" type="Node3D" parent="."]
+script = ExtResource("2_4ntmi")
+
+[node name="DBox" type="Node3D" parent="."]
+script = ExtResource("3_muua7")
+
+[node name="DetectionArea" type="Area3D" parent="." groups=["Player"]]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.506104, 0)
+shape = SubResource("BoxShape3D_muua7")
+
+[node name="FloorProjector" type="Window" parent="."]
+auto_translate_mode = 1
+position = Vector2i(0, 36)
+size = Vector2i(1150, 615)
+
+[node name="FloorCamera" type="Camera3D" parent="FloorProjector"]
+fov = 100.0
+
+[node name="Polygon2D" type="Polygon2D" parent="FloorProjector"]
+scale = Vector2(1280, 100)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
+
+[node name="FrontProjector" type="Window" parent="."]
+auto_translate_mode = 1
+position = Vector2i(0, 36)
+size = Vector2i(1150, 615)
+
+[node name="FrontCamera" type="Camera3D" parent="FrontProjector"]
+
+[node name="UI" type="Polygon2D" parent="FrontProjector"]
+position = Vector2(55, 534)
+scale = Vector2(0.61, 0.78)
+polygon = PackedVector2Array(0, 100, 0, 0, 300, 0, 300, 100)
+
+[node name="PlayerText" type="Label" parent="FrontProjector/UI"]
+offset_right = 300.0
+offset_bottom = 99.0
+text = "Test"
+label_settings = SubResource("LabelSettings_btcbx")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

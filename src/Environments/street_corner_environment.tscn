@@ -283,7 +283,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.3644, 0.101847, 44.036)
 curve = SubResource("Curve3D_341mv")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="PedestrianPaths/Path3D"]
-transform = Transform3D(0.496051, -0.00126925, 0.868292, 0.00138369, 0.999991, 0.000671291, -0.868291, 0.000868451, 0.496053, -49.8375, 0.00889031, -32.0743)
+transform = Transform3D(0.496051, -0.00126925, 0.868292, 0.0013837, 0.999991, 0.000671291, -0.868291, 0.000868451, 0.496053, -49.8375, 0.00889031, -32.0743)
 progress = 58.8
 
 [node name="Kate" parent="PedestrianPaths/Path3D/PathFollow3D" instance=ExtResource("9_vyufj")]
