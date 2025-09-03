@@ -8,7 +8,6 @@ var _triggers_on_curve_offsets: Array[float]
 @onready var down_ray = $Raycasts/RayCast3DDown
 @onready var up_ray = $Raycasts/RayCast3DUp
 var y_offset = 1
-var _y_at_first_pos : float
 
 ### AUDIO ###
 @onready var _motor_sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
@@ -35,7 +34,6 @@ var _wheels_angular_speed: float = 0.0
 
 # Store the original Z offsets of the triggers before resetting their positions.
 func _ready():
-	_y_at_first_pos = global_position.y
 	for i in _triggers_on_curve.size():
 		var offset = _triggers_on_curve[i].position.z
 		_triggers_on_curve_offsets.append(offset)

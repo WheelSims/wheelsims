@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c6idgkcvhp3vc"]
+[gd_scene load_steps=24 format=3 uid="uid://c6idgkcvhp3vc"]
 
 [ext_resource type="PackedScene" uid="uid://bj7d4aocvbm0e" path="res://Terrain/StreetCorner/street_corner_terrain.tscn" id="1_6qklj"]
 [ext_resource type="Script" uid="uid://dnqp0o40gsf8a" path="res://Objects/Street/Scripts/traffic_light_manager.gd" id="3_4wj2v"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b7wmf34eitxkr" path="res://Objects/Street/PrefabScenes/TrafficLightStuffs/PedestrianTrafficLightWithoutPole.tscn" id="6_341mv"]
 [ext_resource type="PackedScene" uid="uid://b74nqh5tcg66o" path="res://Objects/Park/Trees/tree.tscn" id="6_fcu0f"]
 [ext_resource type="PackedScene" uid="uid://dnejsadnifhhr" path="res://Objects/Humans/Kate/kate.tscn" id="9_vyufj"]
+[ext_resource type="PackedScene" uid="uid://gcvy038757is" path="res://Objects/Humans/Josh/josh.tscn" id="10_qknyg"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_o8o6p"]
 panorama = ExtResource("3_ynxnr")
@@ -65,6 +66,13 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 }
 point_count = 13
+
+[sub_resource type="Curve3D" id="Curve3D_r5ais"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -0.672131, 0, -0.15617, 0.705167, 0, -0.993179, -0.705167, 0, 0.993179, -15.2516, 0, 22.1247, 0.730011, 0, -0.437353, -0.730011, 0, 0.437353, -17.2231, 0, 24.0297, 0.434433, 0, -0.357771, -0.434433, 0, 0.357771, -19.0255, 0, 25.1463, 0.587765, 0, -0.536654, -0.587765, 0, 0.536654, -20.6355, 0, 26.2962, 0.31535, 0, -0.589905, -0.31535, 0, 0.589905, -27.4273, 0, 37.0806, 0.0696468, 0, -0.618423, -0.0696468, 0, 0.618423, -28.0206, 0, 38.877, 0.251858, 0, -0.807739, -0.251858, 0, 0.807739, -27.9942, 0, 40.9795, 0, 0, 0, 0, 0, 0, -29.2146, 0, 44.0533, 0, 0, 0, 0, 0, 0, -34.089, 0, 51.8347, 0, 0, 0, 0, 0, 0, -58.1548, 0, 89.0211),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 11
 
 [node name="StreetCornerEnvironment" type="Node3D"]
 
@@ -123,7 +131,7 @@ obstacle = NodePath("Area3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.414448, -2.35811, 22.7708)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StreetCorner/NSTrafficLight/PedestrianTrafficLight2/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.714796, 0.670931, -4.52593)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27229, 0.670932, -4.61645)
 shape = SubResource("BoxShape3D_341mv")
 
 [node name="EWTrafficLight" parent="StreetCorner" node_paths=PackedStringArray("obstacle") instance=ExtResource("4_o8o6p")]
@@ -226,7 +234,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8342, 0, -42.106)
 curve = SubResource("Curve3D_ynxnr")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="CarPaths/Path2"]
-transform = Transform3D(-0.880436, -0.00108007, 0.474133, -1.16414e-10, 0.999943, 0.00227796, -0.474144, 0.00200557, -0.880417, 0.070015, 0, -1.40785)
+transform = Transform3D(-0.880436, -0.00108006, 0.474133, -1.16414e-10, 0.999937, 0.00227796, -0.474144, 0.00200556, -0.880417, 0.070015, 0, -1.40785)
 
 [node name="Car" parent="CarPaths/Path2/PathFollow3D" instance=ExtResource("3_o8o6p")]
 transform = Transform3D(-1.00002, 1.52912e-06, 0.000438184, 9.98087e-07, 1.00012, -0.00121268, -0.000438243, -0.00121278, -1.00004, -0.605889, -0.147922, -1.27308)
@@ -275,8 +283,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.3644, 0.101847, 44.036)
 curve = SubResource("Curve3D_341mv")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="PedestrianPaths/Path3D"]
-transform = Transform3D(0.49605, -0.00126926, 0.868292, 0.00138371, 0.999991, 0.000671295, -0.868291, 0.000868462, 0.496052, -49.8375, 0.00889033, -32.0743)
+transform = Transform3D(0.496051, -0.00126925, 0.868292, 0.00138369, 0.999991, 0.000671291, -0.868291, 0.000868451, 0.496053, -49.8375, 0.00889031, -32.0743)
 progress = 58.8
 
 [node name="Kate" parent="PedestrianPaths/Path3D/PathFollow3D" instance=ExtResource("9_vyufj")]
-transform = Transform3D(-0.993988, -0.0031306, -0.109447, 0.0031306, 0.99837, -0.0569892, 0.109447, -0.0569892, -0.992358, 0, 0, 0)
+transform = Transform3D(-0.993988, -0.0031306, -0.109447, 0.0031306, 0.99837, -0.0569892, 0.109447, -0.0569892, -0.992357, 7.72476e-05, 0.0576021, 4.00543e-05)
+
+[node name="Path3D2" type="Path3D" parent="PedestrianPaths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3944, 0, -44.9107)
+curve = SubResource("Curve3D_r5ais")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="PedestrianPaths/Path3D2"]
+transform = Transform3D(-0.836777, 0, 0.547544, 0, 1, 0, -0.547544, 0, -0.836777, -0.672131, 0, -0.15617)
+
+[node name="Josh" parent="PedestrianPaths/Path3D2/PathFollow3D" instance=ExtResource("10_qknyg")]
+transform = Transform3D(-0.998434, 0, -0.0559383, 0, 1, 0, 0.0559383, 0, -0.998434, -9.53674e-07, 0, 0.237)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.534, -0.086, 11.965)

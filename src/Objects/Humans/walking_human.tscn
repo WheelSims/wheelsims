@@ -34,9 +34,18 @@ stream = ExtResource("2_gxmet")
 volume_db = 5.0
 max_db = 0.0
 max_distance = 10.0
-bus = &"Int_SFX"
 emission_angle_filter_attenuation_db = -13.0
 attenuation_filter_cutoff_hz = 2000.0
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="RayCast3DDown" type="RayCast3D" parent="Raycasts"]
+collision_mask = 15
+hit_back_faces = false
+
+[node name="RayCast3DUp" type="RayCast3D" parent="Raycasts"]
+target_position = Vector3(0, 1, 0)
+collision_mask = 15
 
 [connection signal="area_entered" from="Trigger" to="." method="_on_trigger_area_entered"]
 [connection signal="area_exited" from="Trigger" to="." method="_on_trigger_area_exited"]
