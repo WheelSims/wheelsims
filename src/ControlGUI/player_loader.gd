@@ -15,13 +15,13 @@ func _ready():
 	DisplayServer.window_set_current_screen(0, 0)
 
 	# Affiche SecondDisplayWindow sur Display 2 si dispo
-	var second_window := player_instance.get_node_or_null("SecondDisplayWindow")
+	var second_window := player_instance.get_node_or_null("FrontProjector")
 	if second_window and screen_count > 1:
 		second_window.set_current_screen(1)
 		second_window.size = DisplayServer.screen_get_size(1)
 
 	# (Optionnel) Display 3
-	var third_window := player_instance.get_node_or_null("ThirdDisplayWindow")
+	var third_window := player_instance.get_node_or_null("FloorProjector")
 	if third_window and screen_count > 2:
 		third_window.set_current_screen(2)
 		third_window.size = DisplayServer.screen_get_size(2)
