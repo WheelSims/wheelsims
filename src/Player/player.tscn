@@ -50,6 +50,7 @@ font_color = Color(0, 0, 0, 1)
 
 [node name="Player" type="RigidBody3D" groups=["Player"]]
 mass = 80.0
+contact_monitor = true
 angular_damp = 50.0
 script = ExtResource("1_l8h54")
 

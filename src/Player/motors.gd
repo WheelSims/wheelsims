@@ -25,6 +25,7 @@ var _udp_receiver = PacketPeerUDP.new()
 var _udp_receiver_connected = false
 var _udp_sender = PacketPeerUDP.new()
 var _default_friction: float = 0.01325
+var _current_ground_friction: float
 var _obstacle_friction: float = 1
 
 # Obstacle variables
@@ -42,6 +43,7 @@ var on_foot_obstacle = false
 
 # Functions
 func _ready() -> void:
+	_current_ground_friction = _default_friction
 	_udp_receiver.bind(UDP_RECEIVE_PORT)
 	_udp_sender.connect_to_host(UDP_SEND_IP, UDP_SEND_PORT)
 	get_tree().set_auto_accept_quit(false)  # to send hw_enable false on quit
@@ -130,9 +132,9 @@ func _on_obstacle_colliders_body_shape_exited(body_rid: RID, body: Node3D, body_
 					on_rr_obstacle = false
 		if !on_rr_obstacle and !on_lr_obstacle and !on_lf_obstacle and !on_rf_obstacle and !on_foot_obstacle:
 			on_any_obstacle = false
-			friction = _default_friction
+			friction = _current_ground_friction
 
 func _on_player_on_simulator_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
 	if body is Surface and not on_any_obstacle:
 		friction = body.resistance
-		print(friction)
+		_current_ground_friction = friction
