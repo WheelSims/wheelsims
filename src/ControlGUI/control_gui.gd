@@ -181,11 +181,11 @@ func _on_button_park_pressed() -> void:
 
 	var screen_count: int = DisplayServer.get_screen_count()
 
-	var second_window := park_instance.get_node_or_null("PlayerOnSimulator/SecondDisplayWindow") as Window
+	var second_window := park_instance.get_node_or_null("PlayerOnSimulator/FloorProjector") as Window
 	if second_window and screen_count > 1:
 		_prepare_display_window(second_window, 1)
 
-	var third_window := park_instance.get_node_or_null("PlayerOnSimulator/ThirdDisplayWindow") as Window
+	var third_window := park_instance.get_node_or_null("PlayerOnSimulator/FrontProjector") as Window
 	if third_window and screen_count > 2:
 		_prepare_display_window(third_window, 2)
 
