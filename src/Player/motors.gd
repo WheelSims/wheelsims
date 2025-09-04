@@ -136,3 +136,11 @@ func _on_player_on_simulator_body_shape_entered(body_rid: RID, body: Node, body_
 	if body is Surface and not on_any_obstacle:
 		friction = body.resistance
 		print(friction)
+
+
+func _on_tree_exiting() -> void:
+	hardware_enabled = 0
+	friction = 1
+	send()
+
+ # Replace with function body.
