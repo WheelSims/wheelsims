@@ -14,7 +14,8 @@ var emergency_stop: bool = false
 # Public variables (sent)
 var hardware_enabled: float = 1
 var collision_detected: bool = false
-var friction: float = 0.01325
+#var friction: float = 0.01325
+var friction: float = 0.03
 var mass: float = 90
 var wheel_distance: float = 0.6
 var force_reset: bool = true
@@ -134,3 +135,4 @@ func _on_obstacle_colliders_body_shape_exited(body_rid: RID, body: Node3D, body_
 func _on_player_on_simulator_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
 	if body is Surface and not on_any_obstacle:
 		friction = body.resistance
+		print(friction)

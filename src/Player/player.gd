@@ -29,12 +29,6 @@ extends RigidBody3D
 # -----------------------
 func _ready():
 	pass
-	# Active la caméra principale
-	#if second_camera:
-		#second_camera.current = true 
-	#if third_camera:
-		#third_camera.current = true
-
 
 func _process(_delta):
 	if front_camera_pose:
@@ -54,7 +48,17 @@ func _physics_process(delta: float) -> void:
 	# Rollers navigation
 	if motors != null:
 		motors.receive()
-		motors.send()
+	
+		if Input.is_key_pressed(KEY_Z):
+			var saved_friction = motors.friction
+			motors.friction = 1
+			motors.force_reset = true
+			motors.send()
+			motors.friction = saved_friction
+			motors.force_reset = false
+		else:
+			motors.send()
+		
 		desired_linear_velocity += motors.linear_velocity
 		desired_angular_velocity += motors.angular_velocity
 
