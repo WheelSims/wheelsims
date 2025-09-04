@@ -3,14 +3,13 @@ extends Control
 @export var SIMULATOR_USERS_FILENAME = "user://simulator_users.json"
 
 # --- UI users ---
-@onready var patient_list := $Panel/UserManagement/UserManagement/ScrollContainer/UserList
+@export var patient_list: VBoxContainer
 var current_patient
 
 # --- UI DBox ---
-@onready var btn_dbox      := $Panel/DBox/Mode
-@onready var btn_dbox_up   := $Panel/DBox/DBox/Down
-@onready var btn_dbox_down := $Panel/DBox/DBox/Up
-
+@export var btn_dbox: Button
+@export var btn_dbox_up: Button
+@export var btn_dbox_down: Button
 # --- DBox manuel ---
 var dbox_manual_mode := false
 var manual_heave := 0.0
@@ -23,18 +22,15 @@ var dbox_speed := 0.2
 # --- Scène de ligne patient ---
 var user_row := preload("user.tscn")
 
+var parameters := {
+	"has_dbox": true,
+	"has_floor_cam": true,
+	"has_motors": true,
+}
+
 func _ready() -> void:
 	# Patients
 	load_users()
-
-	# DBox
-	btn_dbox.pressed.connect(_on_btn_dbox_pressed)
-	btn_dbox_up.button_down.connect(_on_dbox_up_button_down)
-	btn_dbox_up.button_up.connect(_on_dbox_button_up)
-	btn_dbox_down.button_down.connect(_on_dbox_down_button_down)
-	btn_dbox_down.button_up.connect(_on_dbox_button_up)
-	btn_dbox_up.visible = false
-	btn_dbox_down.visible = false
 
 
 func _process(delta: float) -> void:
@@ -91,7 +87,6 @@ func _on_btn_add_user_pressed() -> void:
 
 	# Sélection unique : bind de la row
 	new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
-	new_row.get_node("FloorCam").connect("toggled", Callable(self, "_on_row_floor_cam_toggled").bind(new_row))
 
 	patient_list.add_child(new_row)
 	save_users()
@@ -113,7 +108,6 @@ func save_users(_new_text: String = "") -> void:
 			"wheel_distance": (row.get_node("LineWheelDist") as LineEdit).text.to_float(),
 			"mass": (row.get_node("LineMass") as LineEdit).text.to_float(),
 			"selected": (row.get_node("CheckBox") as CheckBox).button_pressed,
-			"floor_cam": (row.get_node("FloorCam") as CheckButton).button_pressed
 		})
 	var file := FileAccess.open(SIMULATOR_USERS_FILENAME, FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -142,7 +136,6 @@ func load_users() -> void:
 		(new_row.get_node("LineWheelDist") as LineEdit).text = str(patient.get("wheel_distance", ""))
 		(new_row.get_node("LineMass") as LineEdit).text = str(patient.get("mass", ""))
 		(new_row.get_node("CheckBox") as CheckBox).button_pressed = bool(patient.get("selected", false))
-		(new_row.get_node("FloorCam") as CheckButton).button_pressed = bool(patient.get("floor_cam", false))
 
 		new_row.get_node("Name").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("Name").connect("focus_exited",   Callable(self, "save_users"))
@@ -151,9 +144,10 @@ func load_users() -> void:
 		new_row.get_node("LineMass").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "save_users"))
 		new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
-		new_row.get_node("FloorCam").connect("toggled", Callable(self, "_on_row_floor_cam_toggled").bind(new_row))
 
 		patient_list.add_child(new_row)
+		if (new_row.get_node("CheckBox") as CheckBox).button_pressed:
+			current_patient = new_row
 
 	_enforce_single_selection()
 
@@ -179,6 +173,8 @@ func _on_button_park_pressed() -> void:
 	park_instance.name = "Park"
 	get_tree().get_root().add_child(park_instance)
 	var second_window := park_instance.get_node_or_null("Player/FloorProjector")
+	var motors := park_instance.get_node_or_null("Player/Motors")
+	var dbox := park_instance.get_node_or_null("Player/DBox")
 	
 	
 
@@ -186,13 +182,16 @@ func _on_button_park_pressed() -> void:
 	
 	for row in patient_list.get_children():
 		if (row.get_node("CheckBox") as CheckBox).button_pressed:
-			if (row.get_node("FloorCam") as CheckButton).button_pressed:
-				print("yaaaa")
+			if parameters["has_floor_cam"]:
 				second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
 				if second_window and screen_count > 1:
 					_prepare_display_window(second_window, 1)
 			else:
 				second_window.queue_free()
+			if not parameters["has_dbox"]:
+				dbox.queue_free()
+			if not parameters["has_motors"]:
+				motors.queue_free()
 
 	var third_window := park_instance.get_node_or_null("Player/FrontProjector") as Window
 	if third_window and screen_count > 2:
@@ -299,9 +298,6 @@ func _on_row_checkbox_toggled(pressed: bool, row: Node) -> void:
 					ocb.button_pressed = false
 	save_users()
 	update_selected_patient_mass()
-	
-func _on_row_floor_cam_toggled(pressed: bool, row: Node) -> void:
-	save_users()
 
 func _enforce_single_selection(preferred_row: Node = null) -> void:
 	var found := false
@@ -318,3 +314,15 @@ func _enforce_single_selection(preferred_row: Node = null) -> void:
 				cb.button_pressed = false
 			else:
 				found = true
+
+
+func _on_motors_toggle_toggled(toggled_on: bool) -> void:
+	parameters["has_motors"] = toggled_on
+
+
+func _on_floor_cam_toggle_toggled(toggled_on: bool) -> void:
+	parameters["has_floor_cam"] = toggled_on
+
+
+func _on_dbox_toggle_toggled(toggled_on: bool) -> void:
+	parameters["has_dbox"] = toggled_on

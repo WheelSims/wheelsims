@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b1fiyrdqrep"]
+[gd_scene load_steps=16 format=3 uid="uid://cmnl58ja4y6f3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mj08"]
 
@@ -34,8 +34,6 @@ corner_radius_bottom_left = 8
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_diijp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jn268"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lci47"]
 
 [node name="PatientRow" type="HBoxContainer"]
 offset_right = 450.0
@@ -108,7 +106,3 @@ theme_override_font_sizes/font_size = 18
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jn268")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqds5")
 text = "Mass"
-
-[node name="FloorCam" type="CheckButton" parent="."]
-layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_lci47")
