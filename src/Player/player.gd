@@ -33,7 +33,7 @@ func _ready():
 func _process(_delta):
 	if front_camera_pose:
 		front_camera.global_transform = front_camera_pose.global_transform
-	if floor_camera_pose:
+	if floor_camera_pose and floor_camera:
 		floor_camera.global_transform = floor_camera_pose.global_transform
 
 func _physics_process(delta: float) -> void:

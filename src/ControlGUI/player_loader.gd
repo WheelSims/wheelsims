@@ -2,7 +2,7 @@ extends Node
 
 func _ready():
 	# Charger la scène du joueur
-	var player_scene := preload("res://Player/player_on_keyboard.tscn")
+	var player_scene := preload("res://Player/player.tscn")
 	var player_instance = player_scene.instantiate()
 	
 	# Ajoute le joueur à la racine (pas dans le menu)

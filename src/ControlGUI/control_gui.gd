@@ -91,7 +91,7 @@ func _on_btn_add_user_pressed() -> void:
 
 	# Sélection unique : bind de la row
 	new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
-	new_row.get_node("SimOnOff").connect("toggled", Callable(self, "_on_row_sim_on_off_toggled").bind(new_row))
+	new_row.get_node("FloorCam").connect("toggled", Callable(self, "_on_row_floor_cam_toggled").bind(new_row))
 
 	patient_list.add_child(new_row)
 	save_users()
@@ -105,7 +105,7 @@ func _on_btn_remove_user_pressed() -> void:
 		save_users()
 		_enforce_single_selection()
 
-func save_users() -> void:
+func save_users(_new_text: String = "") -> void:
 	var data: Array[Dictionary] = []
 	for row in patient_list.get_children():
 		data.append({
@@ -113,11 +113,12 @@ func save_users() -> void:
 			"wheel_distance": (row.get_node("LineWheelDist") as LineEdit).text.to_float(),
 			"mass": (row.get_node("LineMass") as LineEdit).text.to_float(),
 			"selected": (row.get_node("CheckBox") as CheckBox).button_pressed,
-			"sim_bool": (row.get_node("SimOnOff") as CheckButton).button_pressed
+			"floor_cam": (row.get_node("FloorCam") as CheckButton).button_pressed
 		})
 	var file := FileAccess.open(SIMULATOR_USERS_FILENAME, FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
+	update_selected_patient_mass()
 	print("User saved.")
 
 func load_users() -> void:
@@ -141,16 +142,16 @@ func load_users() -> void:
 		(new_row.get_node("LineWheelDist") as LineEdit).text = str(patient.get("wheel_distance", ""))
 		(new_row.get_node("LineMass") as LineEdit).text = str(patient.get("mass", ""))
 		(new_row.get_node("CheckBox") as CheckBox).button_pressed = bool(patient.get("selected", false))
-		(new_row.get_node("SimOnOff") as CheckButton).button_pressed = bool(patient.get("sim_bool", false))
+		(new_row.get_node("FloorCam") as CheckButton).button_pressed = bool(patient.get("floor_cam", false))
 
 		new_row.get_node("Name").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("Name").connect("focus_exited",   Callable(self, "save_users"))
 		new_row.get_node("LineWheelDist").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("LineWheelDist").connect("focus_exited",   Callable(self, "save_users"))
-		new_row.get_node("LineMass").connect("text_submitted", Callable(self, "update_selected_patient_mass"))
-		new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "update_selected_patient_mass"))
+		new_row.get_node("LineMass").connect("text_submitted", Callable(self, "save_users"))
+		new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "save_users"))
 		new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
-		new_row.get_node("SimOnOff").connect("toggled", Callable(self, "_on_row_sim_on_off_toggled").bind(new_row))
+		new_row.get_node("FloorCam").connect("toggled", Callable(self, "_on_row_floor_cam_toggled").bind(new_row))
 
 		patient_list.add_child(new_row)
 
@@ -161,7 +162,7 @@ func load_users() -> void:
 # -------------------------------------------------------------------
 func _kill_existing_simulators() -> void:
 	var root := get_tree().get_root()
-	var prefixes := ["ParkOnSimulator", "PlayerOnSimulator", "ParkOnKeyboard", "PlayerOnKeyboard"]
+	var prefixes := ["Park", "Player"]
 	for child in root.get_children():
 		for p in prefixes:
 			if child.name.begins_with(p):
@@ -175,18 +176,29 @@ func _on_button_park_pressed() -> void:
 	await get_tree().process_frame
 
 	var park_instance := preload("res://PlayableScenes/park.tscn").instantiate()
-	park_instance.name = "ParkOnSimulator"
+	park_instance.name = "Park"
 	get_tree().get_root().add_child(park_instance)
+	var second_window := park_instance.get_node_or_null("Player/FloorProjector")
+	
+	
 
 	var screen_count: int = DisplayServer.get_screen_count()
-
-	var second_window := park_instance.get_node_or_null("Player/FloorProjector") as Window
-	if second_window and screen_count > 1:
-		_prepare_display_window(second_window, 1)
+	
+	for row in patient_list.get_children():
+		if (row.get_node("CheckBox") as CheckBox).button_pressed:
+			if (row.get_node("FloorCam") as CheckButton).button_pressed:
+				print("yaaaa")
+				second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
+				if second_window and screen_count > 1:
+					_prepare_display_window(second_window, 1)
+			else:
+				second_window.queue_free()
 
 	var third_window := park_instance.get_node_or_null("Player/FrontProjector") as Window
 	if third_window and screen_count > 2:
 		_prepare_display_window(third_window, 2)
+		
+	update_selected_patient_mass()
 
 # Met la Window en plein écran exclusif sur l'écran demandé
 # et adapte SubViewportContainer/SubViewport pour remplir la fenêtre.
@@ -227,7 +239,6 @@ func _on_button_stop_pressed() -> void:
 # Masse du patient sélectionné
 # -------------------------------------------------------------------
 func update_selected_patient_mass() -> void:
-	save_users()
 	for row in patient_list.get_children():
 		if (row.get_node("CheckBox") as CheckBox).button_pressed:
 			var player := _get_player()
@@ -289,9 +300,8 @@ func _on_row_checkbox_toggled(pressed: bool, row: Node) -> void:
 	save_users()
 	update_selected_patient_mass()
 	
-func _on_row_sim_on_off_toggled(pressed: bool, row: Node) -> void:
+func _on_row_floor_cam_toggled(pressed: bool, row: Node) -> void:
 	save_users()
-	update_selected_patient_mass()
 
 func _enforce_single_selection(preferred_row: Node = null) -> void:
 	var found := false

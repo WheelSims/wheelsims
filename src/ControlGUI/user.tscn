@@ -109,6 +109,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jn268")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqds5")
 text = "Mass"
 
-[node name="SimOnOff" type="CheckButton" parent="."]
+[node name="FloorCam" type="CheckButton" parent="."]
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lci47")
