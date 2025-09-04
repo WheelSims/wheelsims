@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://biluq7vv8ghsm"]
+[gd_scene load_steps=12 format=3 uid="uid://biluq7vv8ghsm"]
 
 [ext_resource type="Script" uid="uid://bo3s2kc1arfun" path="res://Player/player.gd" id="1_l8h54"]
 [ext_resource type="Script" uid="uid://boe632ih0j5mm" path="res://Player/motors.gd" id="2_4ntmi"]
@@ -33,7 +33,16 @@ font = SubResource("FontFile_2x147")
 font_size = 50
 font_color = Color(0, 0, 0, 1)
 
-[node name="PlayerOnSimulator" type="RigidBody3D" groups=["Player"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_btcbx"]
+size = Vector3(0.459595, 1, 0.35376)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gwnis"]
+size = Vector3(0.660217, 1, 0.28186)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k53q1"]
+size = Vector3(0.816895, 1, 0.333496)
+
+[node name="Player" type="RigidBody3D" groups=["Player"]]
 mass = 80.0
 angular_damp = 50.0
 script = ExtResource("1_l8h54")
@@ -112,3 +121,25 @@ label_settings = SubResource("LabelSettings_btcbx")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="ObstacleColliders" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObstacleColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000305176, 0, -0.821177)
+shape = SubResource("BoxShape3D_btcbx")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ObstacleColliders"]
+transform = Transform3D(0.895028, 0, 0.44601, 0, 1, 0, -0.44601, 0, 0.895028, -0.489695, 0, -0.72723)
+shape = SubResource("BoxShape3D_gwnis")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ObstacleColliders"]
+transform = Transform3D(0.894934, 0, -0.446198, 0, 1, 0, 0.446198, 0, 0.894934, 0.49, 0, -0.727)
+shape = SubResource("BoxShape3D_gwnis")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="ObstacleColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.409396, 0, 0.714338)
+shape = SubResource("BoxShape3D_k53q1")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="ObstacleColliders"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.409, 0, 0.716494)
+shape = SubResource("BoxShape3D_k53q1")
