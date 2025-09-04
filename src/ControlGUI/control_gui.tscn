@@ -64,11 +64,10 @@ color = Color(0.592157, 0.592157, 0.592157, 1)
 [node name="UserManagement" type="MarginContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_bottom = 0.028
 offset_left = 23.0
 offset_top = 25.0
-offset_right = 473.0
-offset_bottom = 582.84
+offset_right = 521.0
+offset_bottom = 583.0
 
 [node name="UserManagement" type="VBoxContainer" parent="Panel/UserManagement"]
 layout_mode = 2
@@ -111,6 +110,14 @@ label_settings = SubResource("LabelSettings_25mam")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Simulator" type="Label" parent="Panel/UserManagement/UserManagement/UserFields"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+text = "Sim On/Off"
+label_settings = SubResource("LabelSettings_25mam")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/UserManagement/UserManagement"]
 custom_minimum_size = Vector2(450, 400)
 layout_mode = 2
@@ -140,9 +147,9 @@ layout_mode = 2
 
 [node name="SceneManagement" type="MarginContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 543.0
+offset_left = 558.0
 offset_top = 25.0
-offset_right = 993.0
+offset_right = 1025.0
 offset_bottom = 371.0
 
 [node name="SceneManagement" type="VBoxContainer" parent="Panel/SceneManagement"]
@@ -212,10 +219,10 @@ vertical_alignment = 1
 
 [node name="DBox" type="MarginContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 516.0
-offset_top = 378.0
-offset_right = 873.0
-offset_bottom = 578.0
+offset_left = 561.0
+offset_top = 412.0
+offset_right = 894.0
+offset_bottom = 612.0
 
 [node name="DBox" type="VBoxContainer" parent="Panel/DBox"]
 layout_mode = 2

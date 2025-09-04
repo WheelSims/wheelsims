@@ -50,29 +50,21 @@ func _process(delta: float) -> void:
 func _get_player() -> Node:
 	var root := get_tree().get_root()
 
-	var n := root.get_node_or_null("ParkOnSimulator/PlayerOnSimulator")
+	var n := root.get_node_or_null("Park/Player")
 	if n and n.has_node("DBox"):
 		return n
 
-	n = root.get_node_or_null("PlayerOnSimulator")
+	n = root.get_node_or_null("Player")
 	if n and n.has_node("DBox"):
 		return n
 
 	for child in root.get_children():
-		if child.name == "PlayerOnSimulator" and child.has_node("DBox"):
+		if child.name == "Player" and child.has_node("DBox"):
 			return child
-		if child.has_node("PlayerOnSimulator"):
-			var p := child.get_node_or_null("PlayerOnSimulator")
+		if child.has_node("Player"):
+			var p := child.get_node_or_null("Player")
 			if p and p.has_node("DBox"):
 				return p
-
-	n = root.get_node_or_null("ParkOnKeyboard/PlayerOnKeyboard")
-	if n and n.has_node("DBox"):
-		return n
-	n = root.get_node_or_null("PlayerOnKeyboard")
-	if n and n.has_node("DBox"):
-		return n
-
 	return null
 
 func _get_dbox_node() -> Node:
@@ -94,16 +86,20 @@ func _on_btn_add_user_pressed() -> void:
 	new_row.get_node("Name").connect("focus_exited",   Callable(self, "save_users"))
 	new_row.get_node("LineWheelDist").connect("text_submitted", Callable(self, "save_users"))
 	new_row.get_node("LineWheelDist").connect("focus_exited",   Callable(self, "save_users"))
-	new_row.get_node("LineMass").connect("text_submitted", Callable(self, "save_users"))
-	new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "save_users"))
+	new_row.get_node("LineMass").connect("text_submitted", Callable(self, "update_selected_patient_mass"))
+	new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "update_selected_patient_mass"))
 
 	# Sélection unique : bind de la row
 	new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
+	new_row.get_node("SimOnOff").connect("toggled", Callable(self, "_on_row_sim_on_off_toggled").bind(new_row))
 
 	patient_list.add_child(new_row)
+	save_users()
 
 func _on_btn_remove_user_pressed() -> void:
 	if patient_list.get_child_count() > 0:
+		if not current_patient:
+			current_patient = patient_list.get_child(patient_list.get_child_count() - 1)
 		patient_list.remove_child(current_patient)
 		current_patient.queue_free()
 		save_users()
@@ -116,7 +112,8 @@ func save_users() -> void:
 			"name": (row.get_node("Name") as LineEdit).text,
 			"wheel_distance": (row.get_node("LineWheelDist") as LineEdit).text.to_float(),
 			"mass": (row.get_node("LineMass") as LineEdit).text.to_float(),
-			"selected": (row.get_node("CheckBox") as CheckBox).button_pressed
+			"selected": (row.get_node("CheckBox") as CheckBox).button_pressed,
+			"sim_bool": (row.get_node("SimOnOff") as CheckButton).button_pressed
 		})
 	var file := FileAccess.open(SIMULATOR_USERS_FILENAME, FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -144,14 +141,16 @@ func load_users() -> void:
 		(new_row.get_node("LineWheelDist") as LineEdit).text = str(patient.get("wheel_distance", ""))
 		(new_row.get_node("LineMass") as LineEdit).text = str(patient.get("mass", ""))
 		(new_row.get_node("CheckBox") as CheckBox).button_pressed = bool(patient.get("selected", false))
+		(new_row.get_node("SimOnOff") as CheckButton).button_pressed = bool(patient.get("sim_bool", false))
 
 		new_row.get_node("Name").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("Name").connect("focus_exited",   Callable(self, "save_users"))
 		new_row.get_node("LineWheelDist").connect("text_submitted", Callable(self, "save_users"))
 		new_row.get_node("LineWheelDist").connect("focus_exited",   Callable(self, "save_users"))
-		new_row.get_node("LineMass").connect("text_submitted", Callable(self, "save_users"))
-		new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "save_users"))
+		new_row.get_node("LineMass").connect("text_submitted", Callable(self, "update_selected_patient_mass"))
+		new_row.get_node("LineMass").connect("focus_exited",   Callable(self, "update_selected_patient_mass"))
 		new_row.get_node("CheckBox").connect("toggled", Callable(self, "_on_row_checkbox_toggled").bind(new_row))
+		new_row.get_node("SimOnOff").connect("toggled", Callable(self, "_on_row_sim_on_off_toggled").bind(new_row))
 
 		patient_list.add_child(new_row)
 
@@ -175,7 +174,7 @@ func _on_button_park_pressed() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 
-	var park_instance := preload("res://PlayableScenes/park_on_simulator.tscn").instantiate()
+	var park_instance := preload("res://PlayableScenes/park.tscn").instantiate()
 	park_instance.name = "ParkOnSimulator"
 	get_tree().get_root().add_child(park_instance)
 
@@ -228,6 +227,7 @@ func _on_button_stop_pressed() -> void:
 # Masse du patient sélectionné
 # -------------------------------------------------------------------
 func update_selected_patient_mass() -> void:
+	save_users()
 	for row in patient_list.get_children():
 		if (row.get_node("CheckBox") as CheckBox).button_pressed:
 			var player := _get_player()
@@ -236,7 +236,6 @@ func update_selected_patient_mass() -> void:
 				print("Updated user mass to ", player.mass)
 			else:
 				print("Player not found.")
-
 # -------------------------------------------------------------------
 # DBox : manuel + maintien
 # -------------------------------------------------------------------
@@ -287,6 +286,10 @@ func _on_row_checkbox_toggled(pressed: bool, row: Node) -> void:
 				var ocb := other.get_node("CheckBox") as CheckBox
 				if ocb.button_pressed:
 					ocb.button_pressed = false
+	save_users()
+	update_selected_patient_mass()
+	
+func _on_row_sim_on_off_toggled(pressed: bool, row: Node) -> void:
 	save_users()
 	update_selected_patient_mass()
 

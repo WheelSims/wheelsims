@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b1fiyrdqrep"]
+[gd_scene load_steps=17 format=3 uid="uid://b1fiyrdqrep"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mj08"]
 
@@ -22,12 +22,20 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67gxb"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uvf0m"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqds5"]
 bg_color = Color(0.733005, 0.733005, 0.733005, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_diijp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jn268"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lci47"]
 
 [node name="PatientRow" type="HBoxContainer"]
 offset_right = 450.0
@@ -59,10 +67,11 @@ theme_override_colors/selection_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
 theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_uneditable_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uvf0m")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqds5")
 text = "Nom"
 
@@ -75,10 +84,11 @@ theme_override_colors/selection_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
 theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_uneditable_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
+theme_override_styles/focus = SubResource("StyleBoxEmpty_diijp")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqds5")
 text = "WheelDis"
 
@@ -91,9 +101,14 @@ theme_override_colors/selection_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
 theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_uneditable_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jn268")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqds5")
 text = "Mass"
+
+[node name="SimOnOff" type="CheckButton" parent="."]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lci47")
