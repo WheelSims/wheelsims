@@ -180,18 +180,16 @@ func _on_button_park_pressed() -> void:
 
 	var screen_count: int = DisplayServer.get_screen_count()
 	
-	for row in patient_list.get_children():
-		if (row.get_node("CheckBox") as CheckBox).button_pressed:
-			if parameters["has_floor_cam"]:
-				second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
-				if second_window and screen_count > 1:
-					_prepare_display_window(second_window, 1)
-			else:
-				second_window.queue_free()
-			if not parameters["has_dbox"]:
-				dbox.queue_free()
-			if not parameters["has_motors"]:
-				motors.queue_free()
+	if parameters["has_floor_cam"]:
+		second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
+		if second_window and screen_count > 1:
+			_prepare_display_window(second_window, 1)
+	else:
+		second_window.queue_free()
+	if not parameters["has_dbox"]:
+		dbox.queue_free()
+	if not parameters["has_motors"]:
+		motors.queue_free()
 
 	var third_window := park_instance.get_node_or_null("Player/FrontProjector") as Window
 	if third_window and screen_count > 2:
@@ -322,7 +320,6 @@ func _on_motors_toggle_toggled(toggled_on: bool) -> void:
 
 func _on_floor_cam_toggle_toggled(toggled_on: bool) -> void:
 	parameters["has_floor_cam"] = toggled_on
-
 
 func _on_dbox_toggle_toggled(toggled_on: bool) -> void:
 	parameters["has_dbox"] = toggled_on
