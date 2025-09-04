@@ -152,5 +152,6 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [connection signal="body_shape_entered" from="." to="Motors" method="_on_player_on_simulator_body_shape_entered"]
+[connection signal="tree_exiting" from="Motors" to="Motors" method="_on_tree_exiting"]
 [connection signal="body_shape_entered" from="ObstacleColliders" to="Motors" method="_on_obstacle_colliders_body_shape_entered"]
 [connection signal="body_shape_exited" from="ObstacleColliders" to="Motors" method="_on_obstacle_colliders_body_shape_exited"]
