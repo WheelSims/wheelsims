@@ -22,16 +22,25 @@ var dbox_speed := 0.2
 # --- Scène de ligne patient ---
 var user_row := preload("user.tscn")
 
+#Preferences
+@export var PREFERENCES_FILENAME = "user://preferences.json"
+@export var dbox_toggle: CheckButton
+@export var floor_cam_toggle: CheckButton
+@export var motors_toggle: CheckButton
+
 var parameters := {
 	"has_dbox": true,
 	"has_floor_cam": true,
 	"has_motors": true,
 }
 
+
 func _ready() -> void:
 	# Patients
 	load_users()
-
+	#Preferences
+	load_preferences()
+	get_tree().root.connect("tree_exiting", Callable(self, "_on_app_quit"))
 
 func _process(delta: float) -> void:
 	if dbox_manual_mode and dbox_hold_dir != 0:
@@ -114,6 +123,12 @@ func save_users(_new_text: String = "") -> void:
 	file.close()
 	update_selected_patient_mass()
 	print("User saved.")
+	
+func save_preferences()->void:
+	var data: Dictionary = parameters
+	var file := FileAccess.open(PREFERENCES_FILENAME, FileAccess.WRITE)
+	file.store_string(JSON.stringify(data, "\t"))
+	file.close()
 
 func load_users() -> void:
 	if not FileAccess.file_exists(SIMULATOR_USERS_FILENAME):
@@ -150,6 +165,26 @@ func load_users() -> void:
 			current_patient = new_row
 
 	_enforce_single_selection()
+
+func load_preferences()->void:
+	if not FileAccess.file_exists(PREFERENCES_FILENAME):
+		return
+	
+	var file := FileAccess.open(PREFERENCES_FILENAME, FileAccess.READ)
+	var parsed_v: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed_v) != TYPE_DICTIONARY:
+		print("User file " + SIMULATOR_USERS_FILENAME + " seems corrupted.")
+		return
+	var result: Dictionary = parsed_v
+	
+	parameters["has_dbox"] = bool(result.get("has_dbox", false))
+	parameters["has_floor_cam"] = bool(result.get("has_floor_cam", false))
+	parameters["has_motors"] = bool(result.get("has_motors", false))
+
+	dbox_toggle.set_pressed_no_signal(parameters["has_dbox"])
+	floor_cam_toggle.set_pressed_no_signal(parameters["has_floor_cam"])
+	motors_toggle.set_pressed_no_signal(parameters["has_motors"])
 
 # -------------------------------------------------------------------
 # Lancement PARK + plein écran sans bordure
@@ -316,10 +351,13 @@ func _enforce_single_selection(preferred_row: Node = null) -> void:
 
 func _on_motors_toggle_toggled(toggled_on: bool) -> void:
 	parameters["has_motors"] = toggled_on
+	save_preferences()
 
 
 func _on_floor_cam_toggle_toggled(toggled_on: bool) -> void:
 	parameters["has_floor_cam"] = toggled_on
-
+	save_preferences()
+	
 func _on_dbox_toggle_toggled(toggled_on: bool) -> void:
 	parameters["has_dbox"] = toggled_on
+	save_preferences()

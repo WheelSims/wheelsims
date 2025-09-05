@@ -55,7 +55,7 @@ bg_color = Color(0.651251, 0.00598981, 2.40654e-07, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi8mn"]
 bg_color = Color(1, 0.0156863, 0, 1)
 
-[node name="ControlGUI" type="Control" node_paths=PackedStringArray("patient_list", "btn_dbox", "btn_dbox_up", "btn_dbox_down")]
+[node name="ControlGUI" type="Control" node_paths=PackedStringArray("patient_list", "btn_dbox", "btn_dbox_up", "btn_dbox_down", "dbox_toggle", "floor_cam_toggle", "motors_toggle")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -67,6 +67,9 @@ patient_list = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxC
 btn_dbox = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/Mode")
 btn_dbox_up = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/DBox/Up")
 btn_dbox_down = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/DBox/Down")
+dbox_toggle = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer/DboxToggle")
+floor_cam_toggle = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer2/FloorCamToggle")
+motors_toggle = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer3/MotorsToggle")
 
 [node name="Panel" type="ColorRect" parent="."]
 layout_mode = 1
@@ -278,7 +281,7 @@ text = "Floor Camera"
 [node name="FloorCamToggle" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 6
+size_flags_vertical = 3
 theme_override_styles/focus = SubResource("StyleBoxEmpty_y75hh")
 button_pressed = true
 
@@ -344,6 +347,8 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_yuhh0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gi8mn")
 text = "Stop"
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/HBoxContainer/AddUser" to="." method="_on_btn_add_user_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/HBoxContainer/RemoveUser" to="." method="_on_btn_remove_user_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/Panel/SelectPark" to="." method="_on_button_park_pressed"]
