@@ -4,7 +4,7 @@ extends Control
 
 # --- UI users ---
 @export var patient_list: VBoxContainer
-var current_patient
+var current_node_patient
 
 # --- UI DBox ---
 @export var btn_dbox: Button
@@ -24,11 +24,10 @@ var user_row := preload("user.tscn")
 
 #Preferences
 @export var PREFERENCES_FILENAME = "user://preferences.json"
-@export var dbox_toggle: CheckButton
-@export var floor_cam_toggle: CheckButton
-@export var motors_toggle: CheckButton
-
-var parameters := {
+@export var _dbox_toggle: CheckButton
+@export var _floor_cam_toggle: CheckButton
+@export var _motors_toggle: CheckButton
+var _parameters := {
 	"has_dbox": true,
 	"has_floor_cam": true,
 	"has_motors": true,
@@ -102,10 +101,10 @@ func _on_btn_add_user_pressed() -> void:
 
 func _on_btn_remove_user_pressed() -> void:
 	if patient_list.get_child_count() > 0:
-		if not current_patient:
-			current_patient = patient_list.get_child(patient_list.get_child_count() - 1)
-		patient_list.remove_child(current_patient)
-		current_patient.queue_free()
+		if not current_node_patient:
+			current_node_patient = patient_list.get_child(patient_list.get_child_count() - 1)
+		patient_list.remove_child(current_node_patient)
+		current_node_patient.queue_free()
 		save_users()
 		_enforce_single_selection()
 
@@ -123,11 +122,10 @@ func save_users(_new_text: String = "") -> void:
 	file.close()
 	update_selected_patient_mass()
 	print("User saved.")
-	
+
 func save_preferences()->void:
-	var data: Dictionary = parameters
 	var file := FileAccess.open(PREFERENCES_FILENAME, FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
+	file.store_string(JSON.stringify(_parameters, "\t"))
 	file.close()
 
 func load_users() -> void:
@@ -162,7 +160,7 @@ func load_users() -> void:
 
 		patient_list.add_child(new_row)
 		if (new_row.get_node("CheckBox") as CheckBox).button_pressed:
-			current_patient = new_row
+			current_node_patient = new_row
 
 	_enforce_single_selection()
 
@@ -178,13 +176,13 @@ func load_preferences()->void:
 		return
 	var result: Dictionary = parsed_v
 	
-	parameters["has_dbox"] = bool(result.get("has_dbox", false))
-	parameters["has_floor_cam"] = bool(result.get("has_floor_cam", false))
-	parameters["has_motors"] = bool(result.get("has_motors", false))
+	_parameters["has_dbox"] = bool(result.get("has_dbox", false))
+	_parameters["has_floor_cam"] = bool(result.get("has_floor_cam", false))
+	_parameters["has_motors"] = bool(result.get("has_motors", false))
 
-	dbox_toggle.set_pressed_no_signal(parameters["has_dbox"])
-	floor_cam_toggle.set_pressed_no_signal(parameters["has_floor_cam"])
-	motors_toggle.set_pressed_no_signal(parameters["has_motors"])
+	_dbox_toggle.set_pressed_no_signal(_parameters["has_dbox"])
+	_floor_cam_toggle.set_pressed_no_signal(_parameters["has_floor_cam"])
+	_motors_toggle.set_pressed_no_signal(_parameters["has_motors"])
 
 # -------------------------------------------------------------------
 # Lancement PARK + plein écran sans bordure
@@ -215,15 +213,15 @@ func _on_button_park_pressed() -> void:
 
 	var screen_count: int = DisplayServer.get_screen_count()
 	
-	if parameters["has_floor_cam"]:
+	if _parameters["has_floor_cam"]:
 		second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
 		if second_window and screen_count > 1:
 			_prepare_display_window(second_window, 1)
 	else:
 		second_window.queue_free()
-	if not parameters["has_dbox"]:
+	if not _parameters["has_dbox"]:
 		dbox.queue_free()
-	if not parameters["has_motors"]:
+	if not _parameters["has_motors"]:
 		motors.queue_free()
 
 	var third_window := park_instance.get_node_or_null("Player/FrontProjector") as Window
@@ -323,7 +321,7 @@ func _send_heave_target() -> void:
 # =========================
 func _on_row_checkbox_toggled(pressed: bool, row: Node) -> void:
 	if pressed:
-		current_patient = row
+		current_node_patient = row
 		for other in patient_list.get_children():
 			if other != row:
 				var ocb := other.get_node("CheckBox") as CheckBox
@@ -349,15 +347,15 @@ func _enforce_single_selection(preferred_row: Node = null) -> void:
 				found = true
 
 
-func _on_motors_toggle_toggled(toggled_on: bool) -> void:
-	parameters["has_motors"] = toggled_on
+func _on__motors_toggle_toggled(toggled_on: bool) -> void:
+	_parameters["has_motors"] = toggled_on
 	save_preferences()
 
 
-func _on_floor_cam_toggle_toggled(toggled_on: bool) -> void:
-	parameters["has_floor_cam"] = toggled_on
+func _on__floor_cam_toggle_toggled(toggled_on: bool) -> void:
+	_parameters["has_floor_cam"] = toggled_on
 	save_preferences()
 	
-func _on_dbox_toggle_toggled(toggled_on: bool) -> void:
-	parameters["has_dbox"] = toggled_on
+func _on__dbox_toggle_toggled(toggled_on: bool) -> void:
+	_parameters["has_dbox"] = toggled_on
 	save_preferences()
