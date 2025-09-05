@@ -1,10 +1,18 @@
 extends Control
 
 @export var SIMULATOR_USERS_FILENAME = "user://simulator_users.json"
+@export var PLAYABLE_SCENES_FOLDER_PATH = "res://PlayableScenes"
+@export var THUMBNAIL_FOLDER_PATH = "res://ControlGUI/Thumbnails"
+var _current_scene_node: Node3D = null
 
 # --- UI users ---
 @export var patient_list: VBoxContainer
 var current_node_patient
+var user_row := preload("user.tscn")
+
+# --- Scene Buttons ---
+var scene_button := preload("scene_button.tscn")
+@export var scene_container: GridContainer
 
 # --- UI DBox ---
 @export var btn_dbox: Button
@@ -14,13 +22,9 @@ var current_node_patient
 var dbox_manual_mode := false
 var manual_heave := 0.0
 var dbox_step := 0.02
-
 # --- maintien appuyé ---
 var dbox_hold_dir := 0
 var dbox_speed := 0.2
-
-# --- Scène de ligne patient ---
-var user_row := preload("user.tscn")
 
 #Preferences
 @export var PREFERENCES_FILENAME = "user://preferences.json"
@@ -39,7 +43,8 @@ func _ready() -> void:
 	load_users()
 	#Preferences
 	load_preferences()
-	get_tree().root.connect("tree_exiting", Callable(self, "_on_app_quit"))
+	
+	_create_map_buttons()
 
 func _process(delta: float) -> void:
 	if dbox_manual_mode and dbox_hold_dir != 0:
@@ -121,7 +126,6 @@ func save_users(_new_text: String = "") -> void:
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 	update_selected_patient_mass()
-	print("User saved.")
 
 func save_preferences()->void:
 	var file := FileAccess.open(PREFERENCES_FILENAME, FileAccess.WRITE)
@@ -137,7 +141,7 @@ func load_users() -> void:
 	file.close()
 
 	if typeof(parsed_v) != TYPE_ARRAY:
-		print("User file " + SIMULATOR_USERS_FILENAME + " seems corrupted.")
+		printerr("User file " + SIMULATOR_USERS_FILENAME + " seems corrupted.")
 		return
 	var result: Array = parsed_v
 
@@ -172,7 +176,7 @@ func load_preferences()->void:
 	var parsed_v: Variant = JSON.parse_string(file.get_as_text())
 	file.close()
 	if typeof(parsed_v) != TYPE_DICTIONARY:
-		print("User file " + SIMULATOR_USERS_FILENAME + " seems corrupted.")
+		printerr("User file " + SIMULATOR_USERS_FILENAME + " seems corrupted.")
 		return
 	var result: Dictionary = parsed_v
 	
@@ -188,33 +192,69 @@ func load_preferences()->void:
 # Lancement PARK + plein écran sans bordure
 # -------------------------------------------------------------------
 func _kill_existing_simulators() -> void:
-	var root := get_tree().get_root()
-	var prefixes := ["Park", "Player"]
-	for child in root.get_children():
-		for p in prefixes:
-			if child.name.begins_with(p):
-				child.queue_free()
-				break
+	if _current_scene_node:
+		_current_scene_node.queue_free()
 
-func _on_button_park_pressed() -> void:
+func _create_map_buttons()->void:
+	var dir := DirAccess.open(PLAYABLE_SCENES_FOLDER_PATH)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name.ends_with(".tscn"):
+				var scene_path = PLAYABLE_SCENES_FOLDER_PATH + "/" + file_name
+				
+				var _scene_button_instance := scene_button.instantiate()				
+				_scene_button_instance.set_meta("scene_path", scene_path)
+				
+				#Label of the button
+				var label: Label = _scene_button_instance.get_node_or_null("Label")
+				var name_without_ext = file_name.trim_suffix(".tscn")
+				var display_name = name_without_ext.capitalize()
+				if label:
+					label.text = display_name
+					
+				#Thumbnail of the button
+				var image_path = THUMBNAIL_FOLDER_PATH + "/" + name_without_ext + ".png"
+				var image := load(image_path)
+				var thumbail: TextureRect = _scene_button_instance.get_node_or_null("Thumbnail")
+				if thumbail:
+					thumbail.texture = image
+				
+				#Button connection to scene instantiation
+				_scene_button_instance.pressed.connect(
+					func():
+						var path = _scene_button_instance.get_meta("scene_path")
+						var scene_instance = load(path).instantiate()
+						get_tree().get_root().add_child(scene_instance)
+						_set_scene(scene_instance)
+				)
+				scene_container.add_child(_scene_button_instance)
+				
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		push_error("Error while opening PlayableScenes folder")
+
+func _set_scene(scene_instance: Node3D)->void:
 	_kill_existing_simulators()
+	_current_scene_node = scene_instance
 
 	await get_tree().process_frame
 	await get_tree().process_frame
 
-	var park_instance := preload("res://PlayableScenes/park.tscn").instantiate()
-	park_instance.name = "Park"
-	get_tree().get_root().add_child(park_instance)
-	var second_window := park_instance.get_node_or_null("Player/FloorProjector")
-	var motors := park_instance.get_node_or_null("Player/Motors")
-	var dbox := park_instance.get_node_or_null("Player/DBox")
+	
+	get_tree().get_root().add_child(scene_instance)
+	var second_window := scene_instance.get_node_or_null("Player/FloorProjector")
+	var motors := scene_instance.get_node_or_null("Player/Motors")
+	var dbox := scene_instance.get_node_or_null("Player/DBox")
 	
 	
 
 	var screen_count: int = DisplayServer.get_screen_count()
 	
 	if _parameters["has_floor_cam"]:
-		second_window = park_instance.get_node_or_null("Player/FloorProjector") as Window
+		second_window = scene_instance.get_node_or_null("Player/FloorProjector") as Window
 		if second_window and screen_count > 1:
 			_prepare_display_window(second_window, 1)
 	else:
@@ -224,7 +264,7 @@ func _on_button_park_pressed() -> void:
 	if not _parameters["has_motors"]:
 		motors.queue_free()
 
-	var third_window := park_instance.get_node_or_null("Player/FrontProjector") as Window
+	var third_window := scene_instance.get_node_or_null("Player/FrontProjector") as Window
 	if third_window and screen_count > 2:
 		_prepare_display_window(third_window, 2)
 		
@@ -263,7 +303,10 @@ func _on_display_window_resized(win: Window) -> void:
 
 
 func _on_button_stop_pressed() -> void:
-	get_tree().quit()
+	if _current_scene_node:
+		_current_scene_node.queue_free()
+	else:
+		get_tree().quit()
 
 # -------------------------------------------------------------------
 # Masse du patient sélectionné
@@ -347,15 +390,15 @@ func _enforce_single_selection(preferred_row: Node = null) -> void:
 				found = true
 
 
-func _on__motors_toggle_toggled(toggled_on: bool) -> void:
+func _on_motors_toggle_toggled(toggled_on: bool) -> void:
 	_parameters["has_motors"] = toggled_on
 	save_preferences()
 
 
-func _on__floor_cam_toggle_toggled(toggled_on: bool) -> void:
+func _on_floor_cam_toggle_toggled(toggled_on: bool) -> void:
 	_parameters["has_floor_cam"] = toggled_on
 	save_preferences()
 	
-func _on__dbox_toggle_toggled(toggled_on: bool) -> void:
+func _on_dbox_toggle_toggled(toggled_on: bool) -> void:
 	_parameters["has_dbox"] = toggled_on
 	save_preferences()

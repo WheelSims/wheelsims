@@ -1,7 +1,6 @@
-[gd_scene load_steps=20 format=3 uid="uid://dq2eiii6jcj6u"]
+[gd_scene load_steps=21 format=3 uid="uid://dq2eiii6jcj6u"]
 
 [ext_resource type="Script" uid="uid://djgralvk1dv5a" path="res://ControlGUI/control_gui.gd" id="1_21f17"]
-[ext_resource type="Texture2D" uid="uid://btb6if6cvhayk" path="res://ControlGUI/park_thumbnail.png" id="2_euxdb"]
 
 [sub_resource type="Theme" id="Theme_2vys5"]
 
@@ -21,14 +20,25 @@ font_size = 20
 [sub_resource type="LabelSettings" id="LabelSettings_25mam"]
 font_size = 20
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y75hh"]
+bg_color = Color(0.327078, 0.386669, 0.653433, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eyqqv"]
-bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_gi8mn"]
 font_size = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6vwj"]
-bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fo410"]
+bg_color = Color(0.626862, 0.403022, 0.230489, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l04jh"]
 bg_color = Color(0, 0, 0, 1)
@@ -46,16 +56,30 @@ expand_margin_right = 1.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6olqd"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d7bjb"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67awh"]
 bg_color = Color(1, 0.0156863, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yuhh0"]
 bg_color = Color(0.651251, 0.00598981, 2.40654e-07, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi8mn"]
 bg_color = Color(1, 0.0156863, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[node name="ControlGUI" type="Control" node_paths=PackedStringArray("patient_list", "btn_dbox", "btn_dbox_up", "btn_dbox_down", "_dbox_toggle", "_floor_cam_toggle", "_motors_toggle")]
+[node name="ControlGUI" type="Control" node_paths=PackedStringArray("patient_list", "scene_container", "btn_dbox", "btn_dbox_up", "btn_dbox_down", "_dbox_toggle", "_floor_cam_toggle", "_motors_toggle")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,7 +87,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_21f17")
-patient_list = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/ScrollContainer/UserList")
+patient_list = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/ScrollContainer/MarginContainer/UserList")
+scene_container = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/ScrollContainer/MarginContainer/GridContainer")
 btn_dbox = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/Mode")
 btn_dbox_up = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/DBox/Up")
 btn_dbox_down = NodePath("Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/DBox/Down")
@@ -132,7 +157,7 @@ theme_override_constants/margin_right = 40
 custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
 size_flags_horizontal = 2
-text = "Name"
+text = "    Name"
 label_settings = SubResource("LabelSettings_limkw")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -157,8 +182,14 @@ vertical_alignment = 1
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y75hh")
 
-[node name="UserList" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+
+[node name="UserList" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/ScrollContainer/MarginContainer"]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2"]
@@ -189,40 +220,27 @@ layout_mode = 2
 custom_minimum_size = Vector2(450, 40)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_eyqqv")
-text = "Scene"
+text = "Scenes"
 label_settings = SubResource("LabelSettings_gi8mn")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel" type="Panel" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2"]
-custom_minimum_size = Vector2(450, 300)
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2"]
+custom_minimum_size = Vector2(0, 290)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_a6vwj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fo410")
 
-[node name="SelectPark" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/Panel"]
-custom_minimum_size = Vector2(170, 120)
-layout_mode = 0
-offset_left = 27.0
-offset_top = 23.0
-offset_right = 197.0
-offset_bottom = 143.0
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 10
 
-[node name="Screenshot" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/Panel/SelectPark"]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 12.0
-offset_right = 145.0
-offset_bottom = 82.0
-texture = ExtResource("2_euxdb")
-expand_mode = 1
-
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/Panel/SelectPark"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 89.0
-offset_right = 105.0
-offset_bottom = 112.0
-text = "Park"
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 20
+columns = 2
 
 [node name="Parameters" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -342,6 +360,7 @@ text = "↓"
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 80
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d7bjb")
 theme_override_styles/hover = SubResource("StyleBoxFlat_67awh")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_yuhh0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gi8mn")
@@ -351,12 +370,8 @@ text = "Stop"
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/HBoxContainer/AddUser" to="." method="_on_btn_add_user_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UserManagement2/HBoxContainer/RemoveUser" to="." method="_on_btn_remove_user_pressed"]
-[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SceneManagement2/Panel/SelectPark" to="." method="_on_button_park_pressed"]
-[connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer/DboxToggle" to="." method="_on__dbox_toggle_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer/DboxToggle" to="." method="_on_dbox_toggle_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer2/FloorCamToggle" to="." method="_on_floor_cam_toggle_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer2/FloorCamToggle" to="." method="_on__floor_cam_toggle_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer3/MotorsToggle" to="." method="_on__motors_toggle_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/HBoxContainer/VBoxContainer3/MotorsToggle" to="." method="_on_motors_toggle_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/Mode" to="." method="_on_btn_dbox_pressed"]
 [connection signal="button_down" from="Panel/MarginContainer/VBoxContainer/Parameters/HBoxContainer2/Dbox/DBox/Up" to="." method="_on_dbox_up_button_down"]
