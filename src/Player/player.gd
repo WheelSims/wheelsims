@@ -24,6 +24,9 @@ extends RigidBody3D
 	"FrontProjector/UI/PlayerText"
 )
 
+#Access to race_manager
+var race_manager: RaceManager = null
+
 # -----------------------
 # Godot lifecycle
 # -----------------------
@@ -39,11 +42,14 @@ func _process(_delta):
 func _physics_process(delta: float) -> void:
 	var desired_linear_velocity := 0.0
 	var desired_angular_velocity := 0.0
-
+	
 	# Keyboard navigation
 	var keyboard_desired_velocities = get_keyboard_velocities()
 	desired_linear_velocity += keyboard_desired_velocities[0]
 	desired_angular_velocity += keyboard_desired_velocities[1]
+	
+	#Other inputs (esc)
+	inputs()
 	
 	# Rollers navigation
 	if motors != null:
@@ -90,8 +96,12 @@ func get_keyboard_velocities() -> Array[float]:
 		angular += KB_ANGULAR_SPEED
 	if Input.is_action_pressed("ui_right"):
 		angular -= KB_ANGULAR_SPEED
-
+		
 	return [linear, angular]
+	
+func inputs()->void:
+	if Input.is_action_just_pressed("ui_cancel") and race_manager:
+		race_manager.pause_command()
 
 func set_player_text(text: String):
 	if player_text_node:

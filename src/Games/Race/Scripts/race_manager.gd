@@ -69,8 +69,8 @@ func _process(delta: float) -> void:
 		if _currentRaceMode.is_finished():
 			_finish_race(false)
 
-func _unhandled_input(event) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE and _currentRaceMode:
+func pause_command() -> void:
+	if _currentRaceMode:
 		_racePaused = !_racePaused
 		pauseMenu.visible = _racePaused
 
@@ -202,7 +202,17 @@ func _on_trigger_area_entered(area: Area3D) -> void:
 	if area.is_in_group("Player") and not _currentRaceMode:
 		_player = area.get_parent()
 		raceChoiceMenu.show()
+		_show_on_front_window(_player)
+		_player.race_manager = self
 		_currentRaceType = RaceType.NONE
+		
+func _show_on_front_window(_player: Node3D) -> void:
+	var _front_proj = _player.get_node_or_null("FrontProjector")
+	var _ui_game = raceChoiceMenu.get_parent()
+	if _front_proj:
+		_ui_game.get_parent().remove_child(_ui_game)
+		_front_proj.add_child(_ui_game)
+		
 
 func _on_cancel_pressed() -> void:
 	raceChoiceMenu.hide()
