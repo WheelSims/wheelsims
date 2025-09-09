@@ -24,11 +24,14 @@ func _process(delta):
 	if (_nb_obstacle < 1):
 		_target_speed = max_speed
 		_current_speed = move_toward(_current_speed, _target_speed, delta * acceleration)
+		if (pathFollow.progress > 2):	
+			_transform_correction()
+			get_parent().position -= y_offset * Vector3.UP
+		else:
+			get_parent().position.y = 0
 	else:
 		_current_speed = 0
 	
-	_transform_correction()
-	get_parent().position -= y_offset * Vector3.UP
 	
 	anim_tree.set("parameters/Blend2/blend_amount", _current_speed/_target_speed)
 	pathFollow.progress += _current_speed * delta
@@ -55,13 +58,13 @@ func _transform_correction() -> void:
 	if down_ray.is_colliding():
 		collision_point = down_ray.get_collision_point()
 		collision_normal = down_ray.get_collision_normal()
-	elif up_ray.is_colliding():
+	if up_ray.is_colliding():
 		collision_point = up_ray.get_collision_point()
 		collision_normal = up_ray.get_collision_normal()
-	else:
+	if not up_ray.is_colliding() and not down_ray.is_colliding():
 		y_offset = 0
 		return
 		
-	var offset = (global_position - collision_point).y
+	var offset = (global_position - collision_point).y -0.02
 	y_offset = offset
 	
