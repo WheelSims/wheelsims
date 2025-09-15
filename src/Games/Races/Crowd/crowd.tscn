@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://d4dm6lh1tu5fw"]
 
-[ext_resource type="Script" uid="uid://cvd1sagu0gxt1" path="res://Games/Race/Crowd/crowd.gd" id="1_vnpyj"]
+[ext_resource type="Script" uid="uid://cvd1sagu0gxt1" path="res://Games/Races/Crowd/crowd.gd" id="1_vnpyj"]
 [ext_resource type="AudioStream" uid="uid://s7gfl17x3yd6" path="res://Sound/Sounds/Humans/Start_Long_CheerfullClap.wav" id="2_u0hxl"]
 [ext_resource type="AudioStream" uid="uid://bj5hb2klk7cds" path="res://Sound/Sounds/Humans/Loop_applause-cheerfully.wav" id="3_p25mo"]
 [ext_resource type="PackedScene" uid="uid://bkjobwvhg7dc7" path="res://Objects/Humans/Kate/Kate.glb" id="4_k5jmy"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cclt12mtoo2ln" path="res://Objects/Humans/Megan/Megan.glb" id="7_3qijt"]
 [ext_resource type="PackedScene" uid="uid://6ifdnfmdvbsc" path="res://Objects/Humans/Josh/Josh.glb" id="8_i1d6g"]
 [ext_resource type="PackedScene" uid="uid://drl4jkx8cjnk4" path="res://Objects/Humans/Louise/Louise.glb" id="9_jx88r"]
+
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ic017"]
 size = Vector3(13.2818, 1.3761, 6.89661)
