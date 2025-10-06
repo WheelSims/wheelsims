@@ -249,9 +249,6 @@ transform = Transform3D(0.925846, -0.0894002, -0.367168, 1.49011e-08, 0.971606, 
 [node name="Car" parent="CarPaths/Path3/PathFollow3D" instance=ExtResource("3_o8o6p")]
 transform = Transform3D(-0.999582, -0.000102207, -0.0292761, 0.000381358, 0.99997, -0.016511, 0.0292737, -0.0165166, -0.999451, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CarPaths/Path3/PathFollow3D/Car"]
-transform = Transform3D(0.0964671, -0.287257, 0.952943, 0.219964, 0.939661, 0.260989, -0.970673, 0.184426, 0.153852, 7.97784, 2.74946, 2.31609)
-
 [node name="PedestrianPaths" type="Node3D" parent="."]
 
 [node name="Path1" type="Path3D" parent="PedestrianPaths"]
@@ -269,7 +266,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.3944, 0, -44.9107)
 curve = SubResource("Curve3D_r5ais")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="PedestrianPaths/Path32"]
-transform = Transform3D(-0.839452, 0.0233381, 0.542928, 0.0521382, 0.997922, 0.0377176, -0.540922, 0.0599693, -0.838931, -52.0985, -1.92089, 79.663)
+transform = Transform3D(-0.839452, 0.0233379, 0.542928, 0.052138, 0.997922, 0.0377176, -0.540922, 0.0599692, -0.838931, -52.0986, -1.92089, 79.663)
 progress = 96.0147
 
 [node name="Josh" parent="PedestrianPaths/Path32/PathFollow3D" instance=ExtResource("10_qknyg")]

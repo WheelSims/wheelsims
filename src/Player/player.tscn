@@ -111,6 +111,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.409, 0.338955, 0.716494)
 shape = SubResource("BoxShape3D_vtle1")
 
 [node name="DetectionArea" type="Area3D" parent="." groups=["Player"]]
+editor_description = "Area3D to be detected"
 monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
