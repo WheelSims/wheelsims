@@ -139,6 +139,7 @@ size = Vector2i(1150, 615)
 [node name="FrontCamera" type="Camera3D" parent="FrontProjector"]
 
 [node name="UI" type="Polygon2D" parent="FrontProjector"]
+visible = false
 position = Vector2(55, 534)
 scale = Vector2(0.61, 0.78)
 polygon = PackedVector2Array(0, 100, 0, 0, 300, 0, 300, 100)
