@@ -11,6 +11,10 @@ var default_border_sample: PackedScene
 var default_obstacle_sample: PackedScene
 @export var border_sample: PackedScene
 @export var obstacle_sample: PackedScene
+@export var finish_line: PackedScene
+var finish_line_instance : Node3D
+@export var start_line: PackedScene
+var start_line_instance : Node3D
 
 var race_length: int = 100
 var race_width: float = 10
@@ -24,8 +28,10 @@ var _depth_dist: float
 var _horiz_dist: float
 var _object_size: float
 
+var _start_race_pos : float = 0
+var _cursor_pos : float = 0
+var _end_race_x_pos : float = 0
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	default_border_sample = border_sample
 	default_obstacle_sample = obstacle_sample
@@ -33,39 +39,40 @@ func _ready() -> void:
 		current_race_data = race_data[0]
 		_change_current_parameters()
 	_border_generation()
-	_border_generation(-1)
+	#_border_generation(-1)
 	_obstacle_generation()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if player:
-		if player.position.distance_to(position) > race_length:
-			player.global_position = restart_pos.global_position
+		if abs(player.global_position.x - finish_line_instance.global_position.x) < 1:
 			_next_level()
 
 func _border_generation(direction := 1) -> void:
-		for i in race_length + end_offset_to_restart*3:
+		for i in race_length:
 			var leftBorderSample: Node3D = default_border_sample.instantiate()
 			current_race_objects.append(leftBorderSample)
-			leftBorderSample.position.x = i * direction
+			leftBorderSample.position.x = i * direction + _start_race_pos
 			leftBorderSample.position.z = - race_width/2 - leftBorderSample.scale.z
 			add_child(leftBorderSample)
 			var rightBorderSample: Node3D = default_border_sample.instantiate()
 			current_race_objects.append(rightBorderSample)
-			rightBorderSample.position.x = i * direction
+			rightBorderSample.position.x = i * direction + _start_race_pos
 			rightBorderSample.position.z = race_width/2 + rightBorderSample.scale.z
 			add_child(rightBorderSample)
 
 func _obstacle_generation() -> void:
-	var _cursor_pos = 0
 	_depth_dist = _rng.randf_range(depth_dist_btw_object_range.x, depth_dist_btw_object_range.y)
 	_cursor_pos += _depth_dist
-	while _cursor_pos < race_length:
+	while _cursor_pos < race_length + _start_race_pos:
 		_obstacles_pos_and_scale(_cursor_pos, -race_width/2, race_width/2, 5)
 		
 		_depth_dist = _rng.randf_range(depth_dist_btw_object_range.x, depth_dist_btw_object_range.y)
 		_cursor_pos += _depth_dist
+	finish_line_instance = finish_line.instantiate()
+	add_child(finish_line_instance)
+	finish_line_instance.position.x = _cursor_pos
+	finish_line_instance.rotate(Vector3.UP, -PI/2)
+	_end_race_x_pos = finish_line_instance.position.x
 
 func _obstacles_pos_and_scale(pos_x: float, left_border_pos, right_border_pos, nb_obs)->void:
 	if (nb_obs == 0):
@@ -101,11 +108,17 @@ func _next_level() -> void:
 	if race_data.size()<=current_race_data_indice:
 		print("fin")
 		return
-	_destroy_current_race_objects()
+	_cursor_pos += end_offset_to_restart
+	_start_race_pos = _cursor_pos
+	if (current_race_data_indice>0):
+		var start_line_instance : Node3D = start_line.instantiate()
+		add_child(start_line_instance)
+		start_line_instance.position.x = _start_race_pos
+		start_line_instance.rotate(Vector3.UP, -PI/2)
+	
 	_change_current_parameters()
-	_border_generation()
-	_border_generation(-1)
 	_obstacle_generation()
+	_border_generation()
 
 func _destroy_current_race_objects()->void:
 	for i in range(current_race_objects.size() - 1, -1, -1):

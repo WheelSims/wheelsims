@@ -65,7 +65,7 @@ transform = Transform3D(1, 0, 0, 0, 0.25742, 0.9663, 0, -0.9663, 0.25742, -70, 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.9983, 1.90735e-06, -0.05933)
 restart_pos = NodePath("RestartPos")
 end_offset_to_restart = 20.0
-race_data = Array[ExtResource("4_ami1h")]([SubResource("Resource_mrrh3"), SubResource("Resource_ami1h")])
+race_data = Array[ExtResource("4_ami1h")]([SubResource("Resource_mrrh3"), SubResource("Resource_ami1h"), SubResource("Resource_mrrh3")])
 
 [node name="RestartPos" type="Node3D" parent="Game"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
