@@ -78,10 +78,6 @@ transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195
 [node name="FloorCameraPose" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, 1.25, -1)
 
-[node name="AudioListener3D" type="AudioListener3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 1.25, 0)
-current = true
-
 [node name="Motors" type="Node3D" parent="."]
 script = ExtResource("2_4ntmi")
 
@@ -133,10 +129,13 @@ polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
 [node name="FrontProjector" type="Window" parent="."]
 auto_translate_mode = 1
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
 position = Vector2i(0, 36)
 size = Vector2i(1150, 615)
 
 [node name="FrontCamera" type="Camera3D" parent="FrontProjector"]
+current = true
 
 [node name="UI" type="Polygon2D" parent="FrontProjector"]
 visible = false
