@@ -48,10 +48,9 @@ func _ready() -> void:
 	_border_generation()
 	_ground_generation()
 	
-func _process(delta: float) -> void:
-	if player and finish_line_instance:
-		if abs(player.global_position.x - finish_line_instance.global_position.x) < 1:
-			_next_level()
+	for i in range(race_data.size()):
+		_next_level()
+
 
 func _next_level() -> void:
 	current_race_data_indice += 1

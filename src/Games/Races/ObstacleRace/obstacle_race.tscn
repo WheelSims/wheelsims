@@ -31,7 +31,7 @@ metadata/_custom_type_script = "uid://epb7xgmjyv72"
 [sub_resource type="BoxShape3D" id="BoxShape3D_8r2kh"]
 size = Vector3(7, 1, 1)
 
-[node name="Game" type="Node3D"]
+[node name="ObstacleRace" type="Node3D"]
 script = ExtResource("1_rnfno")
 race_data = Array[ExtResource("2_ogs1q")]([SubResource("Resource_bvkxh"), SubResource("Resource_pno21")])
 border_sample = ExtResource("3_8r2kh")

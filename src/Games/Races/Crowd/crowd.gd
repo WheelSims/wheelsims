@@ -11,7 +11,7 @@ var _player_in: bool = false
 var _trans_anim: float = 0
 @export var trans_accel: float = 2
 @export var is_final_crowd_on_race = false
-@export var on_race: bool = true
+var on_race: bool = true
 var _player_area: Area3D
 @export var max_applaud_distance : float
 
