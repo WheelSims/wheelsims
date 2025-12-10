@@ -1,10 +1,10 @@
-# test_godot: Wheelchair simulator VR
+# wheelsims
 
 ```{warning}
 This is a work in progress.
 ```
 
-This is a repository of [Godot](https://godotengine.org/) code and assets that implement the VR portion of the IRGLM Simulator in Montreal. This code should be eventually extensible to other wheelchair simulators.
+This is the main repository for the WheelSims project. It contains [Godot](https://godotengine.org/) code and assets that implement the VR portion of the IRGLM Simulator in Montreal. This code should be eventually extensible to other wheelchair simulators.
 
 ## File structure
 
